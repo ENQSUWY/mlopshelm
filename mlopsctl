@@ -1,0 +1,975 @@
+#!/usr/bin/env python3
+
+# Helpful documentation links for certificate generation:
+#     https://access.redhat.com/solutions/28965
+#     https://www.openssl.org/docs/man1.0.2/man5/x509v3_config.html
+
+import base64
+import os
+import subprocess
+import sys
+import tempfile
+
+
+# -------------------------------------------------------------------
+# Constants
+# -------------------------------------------------------------------
+
+def OPENSSL_CNF():
+    return """
+#
+# OpenSSL example configuration file.
+# This is mostly being used for generation of certificate requests.
+#
+
+# Note that you can include other files from the main configuration
+# file using the .include directive.
+#.include filename
+
+# This definition stops the following lines choking if HOME isn't
+# defined.
+HOME			= .
+RANDFILE		= $ENV::HOME/.rnd
+
+# Extra OBJECT IDENTIFIER info:
+#oid_file		= $ENV::HOME/.oid
+oid_section		= new_oids
+
+# To use this configuration file with the "-extfile" option of the
+# "openssl x509" utility, name here the section containing the
+# X.509v3 extensions to use:
+# extensions		= 
+# (Alternatively, use a configuration file that has only
+# X.509v3 extensions in its main [= default] section.)
+
+[ new_oids ]
+
+# We can add new OIDs in here for use by 'ca', 'req' and 'ts'.
+# Add a simple OID like this:
+# testoid1=1.2.3.4
+# Or use config file substitution like this:
+# testoid2=${testoid1}.5.6
+
+# Policies used by the TSA examples.
+tsa_policy1 = 1.2.3.4.1
+tsa_policy2 = 1.2.3.4.5.6
+tsa_policy3 = 1.2.3.4.5.7
+
+####################################################################
+[ ca ]
+default_ca	= CA_default		# The default ca section
+
+####################################################################
+[ CA_default ]
+
+dir		= ./demoCA		# Where everything is kept
+certs		= $dir/certs		# Where the issued certs are kept
+crl_dir		= $dir/crl		# Where the issued crl are kept
+database	= $dir/index.txt	# database index file.
+#unique_subject	= no			# Set to 'no' to allow creation of
+                                # several certs with same subject.
+new_certs_dir	= $dir/newcerts		# default place for new certs.
+
+certificate	= $dir/cacert.pem 	# The CA certificate
+serial		= $dir/serial 		# The current serial number
+crlnumber	= $dir/crlnumber	# the current crl number
+                                # must be commented out to leave a V1 CRL
+crl		= $dir/crl.pem 		# The current CRL
+private_key	= $dir/private/cakey.pem# The private key
+RANDFILE	= $dir/private/.rand	# private random number file
+
+x509_extensions	= usr_cert		# The extensions to add to the cert
+
+# Comment out the following two lines for the "traditional"
+# (and highly broken) format.
+name_opt 	= ca_default		# Subject Name options
+cert_opt 	= ca_default		# Certificate field options
+
+# Extension copying option: use with caution.
+# copy_extensions = copy
+
+# Extensions to add to a CRL. Note: Netscape communicator chokes on V2 CRLs
+# so this is commented out by default to leave a V1 CRL.
+# crlnumber must also be commented out to leave a V1 CRL.
+# crl_extensions	= crl_ext
+
+default_days	= 365			# how long to certify for
+default_crl_days= 30			# how long before next CRL
+default_md	= default		# use public key default MD
+preserve	= no			# keep passed DN ordering
+
+# A few difference way of specifying how similar the request should look
+# For type CA, the listed attributes must be the same, and the optional
+# and supplied fields are just that :-)
+policy		= policy_match
+
+# For the CA policy
+[ policy_match ]
+countryName		= match
+stateOrProvinceName	= match
+organizationName	= match
+organizationalUnitName	= optional
+commonName		= supplied
+emailAddress		= optional
+
+# For the 'anything' policy
+# At this point in time, you must list all acceptable 'object'
+# types.
+[ policy_anything ]
+countryName		= optional
+stateOrProvinceName	= optional
+localityName		= optional
+organizationName	= optional
+organizationalUnitName	= optional
+commonName		= supplied
+emailAddress		= optional
+
+####################################################################
+[ req ]
+default_bits		= 2048
+default_keyfile 	= privkey.pem
+distinguished_name	= req_distinguished_name
+attributes		= req_attributes
+x509_extensions	= v3_ca	# The extensions to add to the self signed cert
+
+# Passwords for private keys if not present they will be prompted for
+# input_password = secret
+# output_password = secret
+
+# This sets a mask for permitted string types. There are several options. 
+# default: PrintableString, T61String, BMPString.
+# pkix	 : PrintableString, BMPString (PKIX recommendation before 2004)
+# utf8only: only UTF8Strings (PKIX recommendation after 2004).
+# nombstr : PrintableString, T61String (no BMPStrings or UTF8Strings).
+# MASK:XXXX a literal mask value.
+# WARNING: ancient versions of Netscape crash on BMPStrings or UTF8Strings.
+string_mask = utf8only
+
+# req_extensions = v3_req # The extensions to add to a certificate request
+
+[ req_distinguished_name ]
+countryName			= Country Name (2 letter code)
+countryName_default		= AU
+countryName_min			= 2
+countryName_max			= 2
+
+stateOrProvinceName		= State or Province Name (full name)
+stateOrProvinceName_default	= Some-State
+
+localityName			= Locality Name (eg, city)
+
+0.organizationName		= Organization Name (eg, company)
+0.organizationName_default	= Internet Widgits Pty Ltd
+
+# we can do this but it is not needed normally :-)
+#1.organizationName		= Second Organization Name (eg, company)
+#1.organizationName_default	= World Wide Web Pty Ltd
+
+organizationalUnitName		= Organizational Unit Name (eg, section)
+#organizationalUnitName_default	=
+
+commonName			= Common Name (e.g. server FQDN or YOUR name)
+commonName_max			= 64
+
+emailAddress			= Email Address
+emailAddress_max		= 64
+
+# SET-ex3			= SET extension number 3
+
+[ req_attributes ]
+challengePassword		= A challenge password
+challengePassword_min		= 4
+challengePassword_max		= 20
+
+unstructuredName		= An optional company name
+
+[ usr_cert ]
+
+# These extensions are added when 'ca' signs a request.
+
+# This goes against PKIX guidelines but some CAs do it and some software
+# requires this to avoid interpreting an end user certificate as a CA.
+
+basicConstraints=CA:FALSE
+
+# Here are some examples of the usage of nsCertType. If it is omitted
+# the certificate can be used for anything *except* object signing.
+
+# This is OK for an SSL server.
+# nsCertType			= server
+
+# For an object signing certificate this would be used.
+# nsCertType = objsign
+
+# For normal client use this is typical
+# nsCertType = client, email
+
+# and for everything including object signing:
+# nsCertType = client, email, objsign
+
+# This is typical in keyUsage for a client certificate.
+# keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+
+# This will be displayed in Netscape's comment listbox.
+nsComment			= "OpenSSL Generated Certificate"
+
+# PKIX recommendations harmless if included in all certificates.
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+
+# This stuff is for subjectAltName and issuerAltname.
+# Import the email address.
+# subjectAltName=email:copy
+# An alternative to produce certificates that aren't
+# deprecated according to PKIX.
+# subjectAltName=email:move
+
+# Copy subject details
+# issuerAltName=issuer:copy
+
+#nsCaRevocationUrl		= http://www.domain.dom/ca-crl.pem
+#nsBaseUrl
+#nsRevocationUrl
+#nsRenewalUrl
+#nsCaPolicyUrl
+#nsSslServerName
+
+# This is required for TSA certificates.
+# extendedKeyUsage = critical,timeStamping
+
+[ v3_req ]
+
+# Extensions to add to a certificate request
+
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+
+[ v3_ca ]
+
+
+# Extensions for a typical CA
+
+
+# PKIX recommendation.
+
+subjectKeyIdentifier=hash
+
+# authorityKeyIdentifier=keyid:always,issuer
+
+basicConstraints = critical,CA:true
+
+# Key usage: this is typical for a CA certificate. However since it will
+# prevent it being used as an test self-signed certificate it is best
+# left out by default.
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+
+# Some might want this also
+# nsCertType = sslCA, emailCA
+
+# Include email address in subject alt name: another PKIX recommendation
+# subjectAltName=email:copy
+# Copy issuer details
+# issuerAltName=issuer:copy
+
+# DER hex encoding of an extension: beware experts only!
+# obj=DER:02:03
+# Where 'obj' is a standard or added object
+# You can even override a supported extension:
+# basicConstraints= critical, DER:30:03:01:01:FF
+
+[ crl_ext ]
+
+# CRL extensions.
+# Only issuerAltName and authorityKeyIdentifier make any sense in a CRL.
+
+# issuerAltName=issuer:copy
+authorityKeyIdentifier=keyid:always
+
+[ proxy_cert_ext ]
+# These extensions should be added when creating a proxy certificate
+
+# This goes against PKIX guidelines but some CAs do it and some software
+# requires this to avoid interpreting an end user certificate as a CA.
+
+basicConstraints=CA:FALSE
+
+# Here are some examples of the usage of nsCertType. If it is omitted
+# the certificate can be used for anything *except* object signing.
+
+# This is OK for an SSL server.
+# nsCertType			= server
+
+# For an object signing certificate this would be used.
+# nsCertType = objsign
+
+# For normal client use this is typical
+# nsCertType = client, email
+
+# and for everything including object signing:
+# nsCertType = client, email, objsign
+
+# This is typical in keyUsage for a client certificate.
+# keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+
+# This will be displayed in Netscape's comment listbox.
+nsComment			= "OpenSSL Generated Certificate"
+
+# PKIX recommendations harmless if included in all certificates.
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+
+# This stuff is for subjectAltName and issuerAltname.
+# Import the email address.
+# subjectAltName=email:copy
+# An alternative to produce certificates that aren't
+# deprecated according to PKIX.
+# subjectAltName=email:move
+
+# Copy subject details
+# issuerAltName=issuer:copy
+
+#nsCaRevocationUrl		= http://www.domain.dom/ca-crl.pem
+#nsBaseUrl
+#nsRevocationUrl
+#nsRenewalUrl
+#nsCaPolicyUrl
+#nsSslServerName
+
+# This really needs to be in place for it to be a proxy certificate.
+proxyCertInfo=critical,language:id-ppl-anyLanguage,pathlen:3,policy:foo
+
+####################################################################
+[ tsa ]
+
+default_tsa = tsa_config1	# the default TSA section
+
+[ tsa_config1 ]
+
+# These are used by the TSA reply generation only.
+dir		= ./demoCA		# TSA root directory
+serial		= $dir/tsaserial	# The current serial number (mandatory)
+crypto_device	= builtin		# OpenSSL engine to use for signing
+signer_cert	= $dir/tsacert.pem 	# The TSA signing certificate
+                                # (optional)
+certs		= $dir/cacert.pem	# Certificate chain to include in reply
+                                # (optional)
+signer_key	= $dir/private/tsakey.pem # The TSA private key (optional)
+signer_digest  = sha256			# Signing digest to use. (Optional)
+default_policy	= tsa_policy1		# Policy if request did not specify it
+                                    # (optional)
+other_policies	= tsa_policy2, tsa_policy3	# acceptable policies (optional)
+digests     = sha1, sha256, sha384, sha512  # Acceptable message digests (mandatory)
+accuracy	= secs:1, millisecs:500, microsecs:100	# (optional)
+clock_precision_digits  = 0	# number of digits after dot. (optional)
+ordering		= yes	# Is ordering defined for timestamps?
+                        # (optional, default: no)
+tsa_name		= yes	# Must the TSA name be included in the reply?
+                        # (optional, default: no)
+ess_cert_id_chain	= no	# Must the ESS cert id chain be included?
+                            # (optional, default: no)
+ess_cert_id_alg		= sha1	# algorithm to compute certificate
+                            # identifier (optional, default: sha1)
+"""
+
+
+def DEPLOYER():
+    return "deployer"
+
+
+def FETCHER():
+    return "fetcher"
+
+
+def INGESTION():
+    return "ingestion"
+
+
+def STORAGE():
+    return "storage"
+
+
+def DRIVERLESS():
+    return "driverless"
+
+
+def UI():
+    return "ui"
+
+
+# -------------------------------------------------------------------
+# Command-line parsing
+# -------------------------------------------------------------------
+
+_dry_run = False
+
+
+def is_dry_run() -> bool:
+    return _dry_run
+
+
+def parse_command(args):
+    global _dry_run
+    arg = args.pop(0)
+    if arg == "-n":
+        _dry_run = True
+        command = args.pop(0)
+        print("[ Specified dry-run mode ]")
+    else:
+        command = arg
+    return command, args
+
+
+def parse_generic(args, thing, flag_arr, default):
+    value = default
+    i = 0
+    while i < len(args):
+        if args[i] in flag_arr:
+            args.pop(i)
+            try:
+                value = args[i]
+                args.pop(i)
+            except IndexError:
+                print(f"ERROR: missing argument for {thing}")
+                sys.exit(1)
+            break
+        else:
+            i += 1
+    if value is None:
+        print(f"ERROR: {thing} must be specified")
+        sys.exit(1)
+    print(f"[ Using {thing} '{value}' ]")
+    return value, args
+
+
+def parse_namespace(args):
+    return parse_generic(args, "namespace", ["-n", "--namespace"], "default")
+
+
+def parse_prefix(args):
+    return parse_generic(args, "prefix", ["-p", "--prefix"], "mlops")
+
+
+def parse_spiffe_prefix(args):
+    return parse_generic(args, "spiffe", ["--spiffe"], None)
+
+
+def parse_values(args):
+    return parse_generic(args, "values", ["-v", "--values"], "k3s-values.yaml")
+
+
+def check_for_unexpected_args(args):
+    if len(args) > 0:
+        print(f"ERROR: Unexpected command-line arguments: {args}")
+        sys.exit(1)
+
+
+# -------------------------------------------------------------------
+# File locations
+# -------------------------------------------------------------------
+
+def pki_dirname():
+    return "gen-pki"
+
+
+def ca_crt_filename():
+    return os.path.join(pki_dirname(), "ca.crt")
+
+
+def ca_key_filename():
+    return os.path.join(pki_dirname(), "ca.key")
+
+
+def server_crt_filename(component):
+    return os.path.join(pki_dirname(), f"{component}-server.crt")
+
+
+def server_key_filename(component):
+    return os.path.join(pki_dirname(), f"{component}-server.key")
+
+
+def client_crt_filename(component):
+    return os.path.join(pki_dirname(), f"{component}-client.crt")
+
+
+def client_key_filename(component):
+    return os.path.join(pki_dirname(), f"{component}-client.key")
+
+
+# -------------------------------------------------------------------
+# Helper functions
+# -------------------------------------------------------------------
+
+def run_subprocess_check(arr):
+    i = 0
+    s = ""
+    while i < len(arr):
+        if i > 0:
+            s += " "
+        tmp = arr[i]
+        if ' ' in tmp:
+            s += f"'{tmp}'"
+        else:
+            s += tmp
+        i += 1
+
+    print(f"+ CMD: {s}")
+    if is_dry_run():
+        return
+    subprocess.run(arr, check=True)
+
+
+def write_cnf(filename, cnf, extra_cnf=None):
+    if is_dry_run():
+        return
+    with open(filename, 'w') as f:
+        f.write(cnf)
+        if extra_cnf is not None:
+            f.write(extra_cnf)
+
+
+def read_file_base64(filename):
+    with open(filename, "rb") as f:
+        encoded = base64.b64encode(f.read())
+        return encoded.decode("utf-8")
+
+
+# -------------------------------------------------------------------
+# Command implementations
+# -------------------------------------------------------------------
+
+def do_help():
+    print("""
+mlopsctl controls the MLOps installation.
+
+Basic Commands (Beginner):
+  help          Print help for a command
+  init          Initialize all required local state (e.g. SSL certificates) (before kubernetes installation)
+  patch         Patch (like sed) of the init-ed state to a yaml values file
+  upgrade       Run helm upgrade (also performs initial install) to install in kubernetes
+
+MLOps Credentials Restore Command:
+  fetch         Restore local state from kubernetes secrets (previously created by init + upgrade)
+
+Basic Commands (Advanced):
+  clean         Remove all local state created by init
+  uninstall     Run helm uninstall to remove everything from the kubernetes cluster
+
+Example - initialize and install into the default kubernetes namespace:
+  mlopsctl init
+  mlopsctl patch k3s-values.yaml
+  mlopsctl upgrade
+
+Example - initialize and install into the "mlops" kubernetes namespace:
+  mlopsctl init -n mlops
+  mlopsctl patch -n mlops k3s-values.yaml
+  mlopsctl upgrade -n mlops
+
+Example - remove installation from the "mlops" kubernetes namespace:
+  mlopsctl uninstall -n mlops
+""")
+
+
+def create_ca_if_necessary(prefix):
+    if os.path.isfile(ca_crt_filename()):
+        return
+    with tempfile.TemporaryDirectory() as tmp_dirname:
+        print(f"[ Created TemporaryDirectory {tmp_dirname} ]")
+        run_subprocess_check(["openssl",
+                              "genrsa",
+                              "-out", ca_key_filename(),
+                              "4096"])
+
+        config_filename = os.path.join(tmp_dirname, "openssl.cnf")
+        write_cnf(config_filename, OPENSSL_CNF())
+        run_subprocess_check(["openssl",
+                              "req",
+                              "-x509",
+                              "-new",
+                              "-nodes",
+                              "-key", ca_key_filename(),
+                              "-sha256",
+                              "-days", "7300",
+                              "-reqexts", "v3_req",
+                              "-extensions", "v3_ca",
+                              "-subj", f"/O=H2O.ai/CN={prefix}-ca",
+                              "-config", config_filename,
+                              "-out", ca_crt_filename()])
+
+
+def calc_extended_key_usage(server: bool):
+    if server:
+        extended_key_usage = "serverAuth"
+    else:
+        extended_key_usage = "clientAuth"
+    return extended_key_usage
+
+
+def calc_component_spiffe_uri(spiffe_prefix, component):
+    return f"{spiffe_prefix}/{component}"
+
+
+def calc_san_cnf(prefix, service, namespace, server: bool, spiffe):
+    """
+    Calculate SAN configuration for a certificate signing request.
+    SAN stands for Subject Alternative Name.
+    """
+    extended_key_usage = calc_extended_key_usage(server)
+    if spiffe is None:
+        spiffe_string = ""
+    else:
+        spiffe_string = f",URI:{spiffe}"
+    san_cnf = f"""
+[SAN]
+subjectAltName   = DNS:localhost,DNS:{prefix}-{service},DNS:{prefix}-{service}.{namespace},IP:127.0.0.1{spiffe_string}
+basicConstraints = critical,CA:FALSE
+keyUsage         = critical,digitalSignature,keyEncipherment
+extendedKeyUsage = {extended_key_usage}
+"""
+    return san_cnf
+
+
+def calc_x509_cnf(prefix, service, namespace, server: bool, spiffe):
+    """
+    Calculate configuration for x509 certificate.
+    """
+    extended_key_usage = calc_extended_key_usage(server)
+    if spiffe is None:
+        spiffe_string = ""
+    else:
+        spiffe_string = f"URI.1 = {spiffe}"
+    x509_cnf = f"""
+[req]
+default_bits       = 4096
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+x509_extensions    = usr_cert
+
+[req_distinguished_name]
+organizationName = H2O.ai
+commonName       = {prefix}-{service}
+
+[req_ext]
+keyUsage               = critical,digitalSignature,keyEncipherment
+extendedKeyUsage       = {extended_key_usage}
+basicConstraints       = critical,CA:FALSE
+authorityKeyIdentifier = keyid,issuer
+subjectAltName         = @alt_names
+
+[alt_names]
+DNS.1 = localhost
+DNS.2 = {prefix}-{service}
+DNS.3 = {prefix}-{service}.{namespace}
+IP.1  = 127.0.0.1
+{spiffe_string}
+"""
+    return x509_cnf
+
+
+def create_generic_if_necessary(prefix, service, key_filename, crt_filename, namespace, server, spiffe_prefix=None):
+    if os.path.isfile(crt_filename):
+        return
+    with tempfile.TemporaryDirectory() as tmp_dirname:
+        print(f"[ Created TemporaryDirectory {tmp_dirname} ]")
+        run_subprocess_check(["openssl",
+                              "genrsa",
+                              "-out", key_filename,
+                              "4096"])
+
+        if spiffe_prefix is None:
+            spiffe = None
+        else:
+            spiffe = f"{spiffe_prefix}/{service}"
+
+        config_filename = os.path.join(tmp_dirname, "openssl.cnf")
+        san_cnf = calc_san_cnf(prefix, service, namespace, server, spiffe)
+        write_cnf(config_filename, OPENSSL_CNF(), san_cnf)
+        csr_filename = os.path.join(tmp_dirname, "csr")
+        run_subprocess_check(["openssl",
+                              "req",
+                              "-new",
+                              "-sha256",
+                              "-key", key_filename,
+                              "-subj", f"/O=H2O.ai/CN={prefix}-{service}",
+                              "-reqexts", "v3_req",
+                              "-reqexts", "SAN",
+                              "-config", config_filename,
+                              "-out", csr_filename])
+
+        config_filename = os.path.join(tmp_dirname, "x509.cnf")
+        x509_cnf = calc_x509_cnf(prefix, service, namespace, server, spiffe)
+        write_cnf(config_filename, x509_cnf)
+        run_subprocess_check(["openssl",
+                              "x509",
+                              "-req",
+                              "-in", csr_filename,
+                              "-CA", ca_crt_filename(),
+                              "-CAkey", ca_key_filename(),
+                              "-CAcreateserial",
+                              "-days", "7300",
+                              "-sha256",
+                              "-extfile", config_filename,
+                              "-extensions", "req_ext",
+                              "-out", crt_filename,
+                              ])
+
+
+def create_storage_server_if_necessary(prefix, namespace):
+    component = STORAGE()
+    server = True
+    return create_generic_if_necessary(prefix,
+                                       component,
+                                       server_key_filename(component),
+                                       server_crt_filename(component),
+                                       namespace,
+                                       server)
+
+
+def create_driverless_client_if_necessary(prefix, namespace):
+    component = DRIVERLESS()
+    server = False
+    return create_generic_if_necessary(prefix,
+                                       component,
+                                       client_key_filename(component),
+                                       client_crt_filename(component),
+                                       namespace,
+                                       server)
+
+
+def create_ui_client_if_necessary(prefix, namespace):
+    component = UI()
+    server = False
+    return create_generic_if_necessary(prefix,
+                                       component,
+                                       client_key_filename(component),
+                                       client_crt_filename(component),
+                                       namespace,
+                                       server)
+
+
+def create_deployer_server_if_necessary(prefix, namespace):
+    component = DEPLOYER()
+    server = True
+    return create_generic_if_necessary(prefix,
+                                       component,
+                                       server_key_filename(component),
+                                       server_crt_filename(component),
+                                       namespace,
+                                       server)
+
+
+def create_deployer_client_if_necessary(prefix, namespace, spiffe_prefix=None):
+    component = DEPLOYER()
+    server = False
+    return create_generic_if_necessary(prefix,
+                                       component,
+                                       client_key_filename(component),
+                                       client_crt_filename(component),
+                                       namespace,
+                                       server,
+                                       spiffe_prefix=spiffe_prefix)
+
+
+def create_fetcher_client_if_necessary(prefix, namespace, spiffe_prefix=None):
+    component = FETCHER()
+    server = False
+    return create_generic_if_necessary(prefix,
+                                       component,
+                                       client_key_filename(component),
+                                       client_crt_filename(component),
+                                       namespace,
+                                       server,
+                                       spiffe_prefix=spiffe_prefix)
+
+
+def create_ingestion_server_if_necessary(prefix, namespace):
+    component = INGESTION()
+    server = True
+    return create_generic_if_necessary(prefix,
+                                       component,
+                                       server_key_filename(component),
+                                       server_crt_filename(component),
+                                       namespace,
+                                       server)
+
+
+def create_ingestion_client_if_necessary(prefix, namespace):
+    component = INGESTION()
+    server = False
+    return create_generic_if_necessary(prefix,
+                                       component,
+                                       client_key_filename(component),
+                                       client_crt_filename(component),
+                                       namespace,
+                                       server)
+
+
+def do_init(args):
+    run_subprocess_check(["mkdir", "-p", pki_dirname()])
+    (namespace, args) = parse_namespace(args)
+    (prefix, args) = parse_prefix(args)
+    (spiffe_prefix, args) = parse_spiffe_prefix(args)
+    check_for_unexpected_args(args)
+
+    create_ca_if_necessary(prefix)
+    create_storage_server_if_necessary(prefix, namespace)
+    create_driverless_client_if_necessary(prefix, namespace)
+    create_ui_client_if_necessary(prefix, namespace)
+    create_deployer_server_if_necessary(prefix, namespace)
+    create_deployer_client_if_necessary(prefix, namespace, spiffe_prefix=spiffe_prefix)
+    create_fetcher_client_if_necessary(prefix, namespace, spiffe_prefix=spiffe_prefix)
+    create_ingestion_server_if_necessary(prefix, namespace)
+    create_ingestion_client_if_necessary(prefix, namespace)
+
+
+def patch_line(patch_list, line):
+    line = line.rstrip()
+    for entry in patch_list:
+        s = entry[0]
+        if s in line:
+            arr = line.split(":")
+            lhs = arr[0]
+            filename = entry[1]
+            s = read_file_base64(filename)
+            return f'{lhs}: "{s}"'
+    return line
+
+
+def patch_file(filename):
+    patch_list = [
+        ["base64_ca_certificate", ca_crt_filename()],
+        ["base64_ca_key", ca_key_filename()],
+        ["base64_storage_tls_server_certificate", server_crt_filename(STORAGE())],
+        ["base64_storage_tls_server_key", server_key_filename(STORAGE())],
+        ["base64_driverless_tls_client_certificate", client_crt_filename(DRIVERLESS())],
+        ["base64_driverless_tls_client_key", client_key_filename(DRIVERLESS())],
+        ["base64_ui_tls_client_certificate", client_crt_filename(UI())],
+        ["base64_ui_tls_client_key", client_key_filename(UI())],
+        ["base64_deployer_tls_client_certificate", client_crt_filename(DEPLOYER())],
+        ["base64_deployer_tls_client_key", client_key_filename(DEPLOYER())],
+        ["base64_deployer_tls_server_certificate", server_crt_filename(DEPLOYER())],
+        ["base64_deployer_tls_server_key", server_key_filename(DEPLOYER())],
+        ["base64_fetcher_tls_client_certificate", client_crt_filename(FETCHER())],
+        ["base64_fetcher_tls_client_key", client_key_filename(FETCHER())],
+        ["base64_ingestion_tls_client_certificate", client_crt_filename(INGESTION())],
+        ["base64_ingestion_tls_client_key", client_key_filename(INGESTION())],
+        ["base64_ingestion_tls_server_certificate", server_crt_filename(INGESTION())],
+        ["base64_ingestion_tls_server_key", server_key_filename(INGESTION())],
+    ]
+
+    with tempfile.TemporaryDirectory() as tmp_dirname:
+        tmp_filename = os.path.join(tmp_dirname, "patched.yaml")
+        with open(tmp_filename, "w") as outf:
+            with open(filename, "r") as inf:
+                line = inf.readline()
+                while line:
+                    line = patch_line(patch_list, line)
+                    outf.write(line)
+                    outf.write("\n")
+                    line = inf.readline()
+
+        print(f"[ Moving {tmp_filename} to {filename} ]")
+        if not is_dry_run():
+            os.rename(tmp_filename, filename)
+
+
+def do_patch(args):
+    (namespace, args) = parse_namespace(args)
+    (prefix, args) = parse_prefix(args)
+    try:
+        filename_to_patch = args.pop(0)
+    except IndexError:
+        print("ERROR: missing filename to patch")
+        sys.exit(1)
+    check_for_unexpected_args(args)
+
+    if not os.path.isfile(filename_to_patch):
+        print(f"ERROR: {filename_to_patch} not found")
+        sys.exit(1)
+    patch_file(filename_to_patch)
+
+
+def do_upgrade(args):
+    (namespace, args) = parse_namespace(args)
+    (prefix, args) = parse_prefix(args)
+    (values, args) = parse_values(args)
+    check_for_unexpected_args(args)
+    try:
+        run_subprocess_check(["helm",
+                              "upgrade",
+                              "--namespace", namespace,
+                              "--install", prefix,
+                              "mlops",
+                              "--values", values])
+    except subprocess.CalledProcessError as e:
+        sys.exit(e.returncode)
+
+
+def do_uninstall(args):
+    (namespace, args) = parse_namespace(args)
+    (prefix, args) = parse_prefix(args)
+    check_for_unexpected_args(args)
+    try:
+        run_subprocess_check(["helm",
+                              "uninstall",
+                              "--namespace", namespace,
+                              prefix])
+    except subprocess.CalledProcessError as e:
+        sys.exit(e.returncode)
+
+
+def do_clean(args):
+    (namespace, args) = parse_namespace(args)
+    (prefix, args) = parse_prefix(args)
+    check_for_unexpected_args(args)
+    try:
+        run_subprocess_check(["rm",
+                              "-rf",
+                              pki_dirname()])
+    except subprocess.CalledProcessError as e:
+        sys.exit(e.returncode)
+
+
+def do_fetch(args):
+    (namespace, args) = parse_namespace(args)
+    (prefix, args) = parse_prefix(args)
+    check_for_unexpected_args(args)
+    print("ERROR: Not yet implemented")
+    sys.exit(1)
+
+
+# -------------------------------------------------------------------
+# Main program
+# -------------------------------------------------------------------
+
+def main():
+    # noinspection PyBroadException
+    try:
+        args = sys.argv[1:]
+        (command, args) = parse_command(args)
+    except Exception:
+        do_help()
+        sys.exit(1)
+
+    if command == "help":
+        do_help()
+    elif command == "init":
+        do_init(args)
+    elif command == "patch":
+        do_patch(args)
+    elif command == "upgrade":
+        do_upgrade(args)
+    elif command == "uninstall":
+        do_uninstall(args)
+    elif command == "clean":
+        do_clean(args)
+    elif command == "fetch":
+        do_fetch(args)
+    else:
+        do_help()
+        sys.exit(1)
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

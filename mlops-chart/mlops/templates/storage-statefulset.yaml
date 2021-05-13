@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+  {{- include "mlops.labels" . | nindent 4 }}
+  name: {{ include "mlops.fullname" . }}-storage
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "mlops.fullname" . }}-storage
+  serviceName: {{ include "mlops.fullname" . }}-storage
+  template:
+    metadata:
+      labels:
+        app: {{ include "mlops.fullname" . }}-storage
+      name: {{ include "mlops.fullname" . }}-storage
+      namespace: {{ .Release.Namespace }}
+    spec:
+      containers:
+        - env:
+            - name: OAUTH2_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: storage_client_secret
+                  name: {{ include "mlops.fullname" . }}-oidc-client-secrets
+            - name: DATABASE_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  key: go_pq_connection_string
+                  name: {{ include "mlops.fullname" . }}-postgres-storage
+          envFrom:
+            - configMapRef:
+                name: {{ include "mlops.fullname" . }}-storage-env
+                optional: false
+          image: {{ .Values.mlops.storage_image }}
+          imagePullPolicy: {{ .Values.mlops.image_pull_policy }}
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 9999
+            timeoutSeconds: 1
+          name: {{ include "mlops.fullname" . }}-storage
+          ports:
+            - containerPort: 9999
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/opt/h2oai/storage/data
+              name: data
+            - mountPath: /pki/ca
+              name: tls-ca
+            - mountPath: /pki/server
+              name: tls-server
+      initContainers:
+        - args:
+            - bootstrap-roles
+          env:
+            - name: INPUT_FILE
+              value: /config/roles.hcl
+            - name: DATABASE_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  key: go_pq_connection_string
+                  name: {{ include "mlops.fullname" . }}-postgres-storage
+          envFrom:
+            - configMapRef:
+                name: {{ include "mlops.fullname" . }}-storage-roles-bootstrap-env
+                optional: false
+          image: {{ .Values.mlops.storage_image }}
+          imagePullPolicy: {{ .Values.mlops.image_pull_policy }}
+          name: {{ include "mlops.fullname" . }}-storage-roles-bootstrap
+          volumeMounts:
+            - mountPath: /config
+              name: bootstrap-roles-config
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "mlops.fullname" . }}-storage-data
+        - name: tls-ca
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-ca
+        - name: tls-server
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-storage-tls-server
+        - configMap:
+            defaultMode: 420
+            name: {{ include "mlops.fullname" . }}-storage-roles-bootstrap-config
+          name: bootstrap-roles-config

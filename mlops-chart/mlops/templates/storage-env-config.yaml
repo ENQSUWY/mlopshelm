@@ -1,0 +1,18 @@
+apiVersion: v1
+data:
+  DATABASE_DRIVER: postgres
+  LOG_LEVEL: trace
+  OAUTH2_CLIENT_ID: {{ .Values.mlops.storage_oidc_client_id | quote }}
+  OAUTH2_TOKEN_INTROSPECTION_URL: {{ .Values.mlops.oidc_token_introspection_url | quote }}
+  SERVER_REFLECTION_ENABLED: "true"
+  SPIFFE_TRUST_DOMAIN: "spiffe://40-71-236-86.h2o.sslip.io"
+  SPIFFE_TRUSTED_ADMIN_IDS: "spiffe://40-71-236-86.h2o.sslip.io/deployer,spiffe://40-71-236-86.h2o.sslip.io/fetcher"
+  TLS_CA_CERT_PATH: /pki/ca/certificate
+  TLS_CERT_PATH: /pki/server/certificate
+  TLS_ENABLED: "true"
+  TLS_KEY_PATH: /pki/server/key
+  VERSION_CHECK_MODE: noaction
+kind: ConfigMap
+metadata:
+  name: {{ include "mlops.fullname" . }}-storage-env
+  namespace: {{ .Release.Namespace }}

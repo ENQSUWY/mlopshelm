@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mlops.fullname" . }}-deployer-env
+  namespace: {{ .Release.Namespace }}
+data:
+  DRIVERLESS_AI_LICENSE_FILE: /license/license.sig
+  GRAFANA_INTERNAL_URL: "http://{{ include "mlops.fullname" . }}-grafana:3000"
+  GRAFANA_PUBLIC_URL: "{{ .Values.mlops.protocol }}://{{ .Values.mlops.grafana_subdomain }}.{{ .Values.mlops.domain }}"
+  GRAFANA_TOKEN: {{ .Values.mlops.grafana_api_key | quote }}
+  INFLUXDB_URL: "http://{{ include "mlops.fullname" . }}-influxdb:8086"
+  LOGLEVEL: DEBUG
+  MODEL_FETCHER_DOCKER_IMAGE: {{ .Values.mlops.model_fetcher_image | quote }}
+  MONITOR_DOCKER_IMAGE: {{ .Values.mlops.monitor_proxy_image | quote }}
+  SCORER_MOJO_DOCKER_IMAGE: {{ .Values.mlops.scorer_image | quote }}
+  SCORER_PUBLIC_URL: "{{ .Values.mlops.protocol }}://{{ .Values.mlops.model_subdomain }}.{{ .Values.mlops.domain }}"
+  SECURITY_PROXY_DOCKER_IMAGE: {{ .Values.mlops.security_proxy_image | quote }}
+  SERVICE_BIND_PORT: "9980"
+  SERVICE_TLS_CA_CERT_PATH: /pki/ca/certificate
+  SERVICE_TLS_CERT_PATH: /pki/server/certificate
+  SERVICE_TLS_ENABLED: "true"
+  SERVICE_TLS_KEY_PATH: /pki/server/key
+  STORAGE_HOST: {{ include "mlops.fullname" . }}-storage
+  STORAGE_PORT: "9999"
+  STORAGE_TLS_CA_CERT_PATH: /pki/ca/certificate
+  STORAGE_TLS_CERT_PATH: /pki/client/certificate
+  STORAGE_TLS_ENABLED: "true"
+  STORAGE_TLS_KEY_PATH: /pki/client/key
+  SYNC_FREQUENCY: 10s

@@ -1,0 +1,11 @@
+apiVersion: getambassador.io/v2
+kind: Module
+metadata:
+  name: ambassador
+  namespace: {{ .Release.Namespace }}
+spec:
+  config:
+    service_port: 1080
+    cors:
+      origins: "{{ .Values.mlops.protocol }}://{{ .Values.mlops.ui_subdomain }}.{{ .Values.mlops.domain }}"
+      headers: Authorization

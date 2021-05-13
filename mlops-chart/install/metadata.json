@@ -1,0 +1,1 @@
+{"clusterName":"support-openshift","clusterID":"232febc1-5f3f-4979-b58d-89de89036631","infraID":"support-openshift-rwtsm","aws":{"region":"us-east-2","identifier":[{"kubernetes.io/cluster/support-openshift-rwtsm":"owned"},{"openshiftClusterID":"232febc1-5f3f-4979-b58d-89de89036631"}]}}

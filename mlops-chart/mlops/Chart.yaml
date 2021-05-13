@@ -1,0 +1,17 @@
+apiVersion: v2
+name: mlops
+description: Managing, Deploying and Monitoring Machine Learning Models
+type: application
+version: 0.40.1
+appVersion: "0.40.1"
+
+dependencies:
+  - name: ambassador
+    version: 6.5.19
+    repository: https://getambassador.io
+  - name: influxdb
+    version: 4.9.14
+    repository: https://helm.influxdata.com
+  - name: grafana
+    version: 6.8.0
+    repository: https://grafana.github.io/helm-charts

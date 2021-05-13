@@ -1,0 +1,184 @@
+ubuntu@ip-10-0-0-84:~$ cat sh1.txt 
+    1  ls -al 
+    2  cd sandbox/
+    3  ls -al 
+    4  cd startup-files/
+    5  ls -al 
+    6  cat sandbox.service 
+    7  cat patch-hac-k3s-values-yaml.sh
+    8  clear
+    9  cat patch-hac-k3s-values-yaml.sh
+   10  ls -ltr
+   11  cat sandbox.service 
+   12  pwd
+   13  ls -al 
+   14  cat sandbox.service 
+   15  kubectl get pods 
+   16  kubectl get ing
+   17  ls -al 
+   18  cat sandbox.service 
+   19  cd
+   20  git clone https://github.com/h2oai/h2oai-platform.git
+   21  ls -al 
+   22  cd h2oai-platform/
+   23  ls -al 
+   24  git checkout tomk-helm
+   25  cd helm/
+   26  ls -al 
+   27  pwd
+   28  ls -la 
+   29  cd mlops-chart/
+   30  ls -la 
+   31  emacs k3s-values.yaml 
+   32  sudo apt install emacs
+   33  ls -ltr
+   34  emacs k3s-values.yaml 
+   35  ls -ltr
+   36  kubectl get all
+   37  clear
+   38  kubectl get all
+   39  kubectl get pods
+   40  kubectl logs mlops-storage-0
+   41  kubectl get pods
+   42  kubectl logs mlops-ui-5fdd9d556f-s6tpw
+   43  kubectl get ing
+   44  clear
+   45  clear
+   46  kubectl get ing
+   47  cat 
+   48  clear
+   49  cat /home/ubuntu/sandbox/startup-files/apply-steam-keycloak.sh
+   50  /home/ubuntu/sandbox/startup-files/apply-steam-keycloak.sh
+   51  cat /home/ubuntu/sandbox/startup-files/upgrade-steam-helm.sh
+   52  clear
+   53  cat /home/ubuntu/sandbox/startup-files/upgrade-steam-helm.sh
+   54  /home/ubuntu/sandbox/startup-files/upgrade-steam-helm.sh
+   55  kubectl get pods
+   56  cd
+   57  cd sandbox/startup-files/
+   58  ls
+   59  ls -al 
+   60  cd ..
+   61  ls -al 
+   62  cd h2oaicloud-chart/
+   63  cd ..
+   64  cd enterprise-steam-chart/
+   65  ls -al 
+   66  cat steam-k3s-values.yaml
+   67  kubectl get pods 
+   68  cat /home/ubuntu/sandbox/startup-files/setup-enterprise-steam.sh
+   69  less /home/ubuntu/sandbox/setup-enterprise-steam.py 
+   70  /home/ubuntu/sandbox/setup-enterprise-steam.py 
+   71  cd ..
+   72  cd startup-files/
+   73  cd
+   74  /home/ubuntu/sandbox/startup-files/setup-enterprise-steam.sh
+   75  vi /home/ubuntu/sandbox/startup-files/setup-enterprise-steam.sh
+   76  cat /home/ubuntu/sandbox/startup-files/setup-enterprise-steam.sh
+   77  clear
+   78  cat /home/ubuntu/sandbox/startup-files/setup-enterprise-steam.sh
+   79  vi /home/ubuntu/sandbox/setup-enterprise-steam.py
+   80  /home/ubuntu/sandbox/startup-files/setup-enterprise-steam.sh
+   81  pwd
+   82  ls -al 
+   83  cd h2oai-platform/
+   84  cd helm/
+   85  ls -al 
+   86  cd mlops-chart/
+   87  ls -al 
+   88  vi k3s-values.yaml 
+   89  ls -al 
+   90  vi k3s-values.yaml 
+   91  ls -al 
+   92  ls mlops/values.yaml 
+   93  less mlops/values.yaml 
+   94  ls -al 
+   95  less k3s-values.yaml 
+   96  vi k3s-values.yaml 
+   97  kubectl logs -f mlops-deployer-79cb4c7767-fvvcl
+   98  vi k3s-values.yaml 
+   99  ls -ltr
+  100  kubectl logs -f mlops-deployer-79cb4c7767-fvvcl
+  101  kubectl get pods -A
+  102  kubectl get svc -A
+  103  ls a-l 
+  104  ls -al 
+  105  vi k3s-values.yaml 
+  106  kubectl get pods 
+  107  kubectl logs -f mlops-deployer-6df8ff9444-h8cd9
+  108  ls -ltr
+  109  vi k3s-values.yaml 
+  110  kubectl exec -ti mlops-deployer-6df8ff9444-h8cd9 /bin/sh
+  111  vi k3s-values.yaml 
+  112  kubectl get pods
+  113  kubectl logs -f mlops-deployer-7f84545486-rcd8v
+  114  ls -ltr 
+  115  vi k3s-values.yaml 
+  116  curl ifconfig.me
+  117  vi k3s-values.yaml 
+  118  pwd
+  119  ls -ltr
+  120  kubectl get pods
+  121  kubectl logs -f mlops-deployer-79cb4c7767-8m8kk
+  122  kubectl describe pod mlops-deployer-79cb4c7767-8m8kk
+  123  less k3s-values.yaml 
+  124  cat ~/.kube/config 
+  125  kubectl get secrets
+  126  kubectl get secrets mlops-deployer-service-account-token-vkkl9 -o yaml
+  127  kubectl logs -f mlops-deployer-79cb4c7767-8m8kk
+  128  kubectl exec -ti mlops-deployer-79cb4c7767-8m8kk /bin/bash
+  129  kubectl exec -ti mlops-deployer-79cb4c7767-8m8kk /bin/sh
+  130  vi k3s-values.yaml 
+  131  ls -ltr
+  132  kubectl get pods 
+  133  kubectl logs -f mlops-deployer-79cb4c7767-8m8kk
+  134  kubectl get pods 
+  135  kubectl delete pod mlops-deployer-79cb4c7767-8m8kk
+  136  kubectl get pods 
+  137  kubectl logs -f mlops-deployer-79cb4c7767-s4bw4
+  138  vi k3s-values.yaml 
+  139  kubectl get pods 
+  140  kubectl logs -f mlops-deployer-7d9dfc89b5-5gwvl
+  141  vi k3s-values.yaml 
+  142  kubectl get pds
+  143  kubectl get pods
+  144  kubectl delete pod mlops-deployer-7d9dfc89b5-5gwvl
+  145  kubectl get pods
+  146  kubectl logs -f mlops-deployer-7d9dfc89b5-cvkwh
+  147  pwd
+  148  cd ..
+  149  cd
+  150  cd sandbox/
+  151  ls
+  152  cd startup-files/
+  153  ls -al 
+  154  cat fix-k3s-permissions.sh 
+  155  curl -sfL https://get.k3s.io | less
+  156  ifconfig
+  157  ifconfig | less
+  158  ps -efww | grep k3s
+  159  l
+  160  ll
+  161  ls -al 
+  162  cat fix-k3s-permissions.sh 
+  163  man sh
+  164  pwd
+  165  ls -al 
+  166  vi fix-k3s-permissions.sh 
+  167  cd
+  168  /home/ubuntu/sandbox/startup-files/fix-k3s-permissions.sh 
+  169  sudo systemctl status k3s
+  170  cat /usr/local/bin/k3s-killall.sh
+  171  /usr/local/bin/k3s-killall.sh
+  172  kubectl get pods 
+  173  /home/ubuntu/sandbox/startup-files/fix-k3s-permissions.sh 
+  174  /usr/local/bin/k3s-killall.sh
+  175  vi fix-k3s-permissions.sh 
+  176  cd sandbox/startup-files/
+  177  vi fix-k3s-permissions.sh 
+  178  /home/ubuntu/sandbox/startup-files/fix-k3s-permissions.sh 
+  179  ls -al 
+  180  cat fix-k3s-permissions.sh 
+  181  history 
+  182  cd
+  183  history > sh1.txt

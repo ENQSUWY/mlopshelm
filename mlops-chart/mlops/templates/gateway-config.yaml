@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  DEPLOYER_ADDRESS: {{ include "mlops.fullname" . }}-deployer:9980
+  DEPLOYER_TLS_CA_CERT: /pki/ca/certificate
+  DEPLOYER_TLS_CERT: /pki/client/certificate
+  DEPLOYER_TLS_ENABLED: "true"
+  DEPLOYER_TLS_KEY: /pki/client/key
+  LOG_LEVEL: debug
+  MODELINGEST_ADDRESS: {{ include "mlops.fullname" . }}-ingestion:9911
+  MODELINGEST_TLS_CA_CERT: /pki/ca/certificate
+  MODELINGEST_TLS_CERT: /pki/client/certificate
+  MODELINGEST_TLS_ENABLED: "true"
+  MODELINGEST_TLS_KEY: /pki/client/key
+  STORAGE_ADDRESS: {{ include "mlops.fullname" . }}-storage:9999
+  STORAGE_TLS_CA_CERT: /pki/ca/certificate
+  STORAGE_TLS_CERT: /pki/client/certificate
+  STORAGE_TLS_ENABLED: "true"
+  STORAGE_TLS_KEY: /pki/client/key
+  TLS_ENABLED: "false"
+kind: ConfigMap
+metadata:
+  name: {{ include "mlops.fullname" . }}-gateway-env
+  namespace: {{ .Release.Namespace }}

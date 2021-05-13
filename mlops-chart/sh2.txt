@@ -1,0 +1,312 @@
+    1  /home/ubuntu/sandbox/startup-files/fix-k3s-permissions.sh
+    2  kubectl get pods
+    3  kubectl get all
+    4  cat /home/ubuntu/sandbox/startup-files/fix-k3s-permissions.sh
+    5  clear
+    6  cat /home/ubuntu/sandbox/startup-files/fix-k3s-permissions.sh
+    7  cat /home/ubuntu/sandbox/startup-files/import-hac.sh
+    8  vi /home/ubuntu/sandbox/startup-files/import-hac.sh
+    9  /home/ubuntu/sandbox/startup-files/import-hac.sh
+   10  clear
+   11  cat /home/ubuntu/sandbox/startup-files/patch-hac-k3s-values-yaml.sh
+   12  /home/ubuntu/sandbox/startup-files/patch-hac-k3s-values-yaml.sh
+   13  clear
+   14  cat /home/ubuntu/sandbox/startup-files/upgrade-hac-helm.sh
+   15  /home/ubuntu/sandbox/startup-files/upgrade-hac-helm.sh
+   16  cat /home/ubuntu/sandbox/startup-files/apply-mlops-keycloak.sh
+   17* ar
+   18  less /home/ubuntu/sandbox/startup-files/apply-mlops-keycloak.sh
+   19  vi /home/ubuntu/sandbox/startup-files/apply-mlops-keycloak.sh
+   20  /home/ubuntu/sandbox/startup-files/apply-mlops-keycloak.sh
+   21  which kcadm.sh
+   22  cat /home/ubuntu/sandbox/startup-files/apply-steam-keycloak.sh
+   23  clear
+   24  cat /home/ubuntu/sandbox/startup-files/apply-steam-keycloak.sh
+   25  clar
+   26  clear
+   27  cat /home/ubuntu/sandbox/startup-files/apply-steam-keycloak.sh
+   28  clear
+   29  cat /home/ubuntu/sandbox/startup-files/upgrade-steam-helm.sh
+   30  clear
+   31  cat /home/ubuntu/sandbox/startup-files/setup-enterprise-steam.sh
+   32  vi /home/ubuntu/sandbox/setup-enterprise-steam.py
+   33  cat /home/ubuntu/sandbox/startup-files/apply-hac-keycloak.sh
+   34  clear
+   35  cat /home/ubuntu/sandbox/startup-files/apply-hac-keycloak.sh
+   36  clear
+   37  cat /home/ubuntu/sandbox/startup-files/config-hac-cli.sh
+   38  clear
+   39  cat /home/ubuntu/sandbox/startup-files/install-hac-apps.sh
+   40  clear
+   41  cat /home/ubuntu/sandbox/startup-files/patch-mlops-terraform.sh
+   42  clear
+   43  cat /home/ubuntu/sandbox/startup-files/apply-mlops-terraform.sh
+   44  clear
+   45  ls
+   46  cd h2oai-platform/
+   47  ls -al 
+   48  cd helm/
+   49  ls -al 
+   50  cd mlops-chart/
+   51  ls -ltr
+   52  ../mlopsctl help
+   53  ../mlopsctl -n init 
+   54  echo ../mlopsctl -n init --spiffe spiffe://.nip.io
+   55  curl ifconfig.me
+   56  ../mlopsctl -n init --spiffe spiffe:35.166.103.201//.nip.io
+   57  clear
+   58  ../mlopsctl -n init --spiffe spiffe:35.166.103.201//.nip.io
+   59  ../mlopsctl -n init --spiffe spiffe://35.166.103.201.nip.io
+   60  ../mlopsctl init --spiffe spiffe://35.166.103.201.nip.io
+   61  ls -ltr
+   62  cd gen-pki/
+   63  ls -al 
+   64  openssl x509 -text deployer-client.crt | less
+   65  openssl x509 deployer-client.crt -text | less
+   66  openssl x509 -in deployer-client.crt -text | less
+   67  cd
+   68  cd sandbox/
+   69  ls
+   70  cd startup-files/
+   71  ls -al 
+   72  grep spiffe *
+   73  cd
+   74  ls -al 
+   75  cd h2oai-platform/
+   76  cd helm/
+   77  ls -al 
+   78  cd mlops-chart/
+   79  ls -al 
+   80  ls -al gen-pki/
+   81  ../mlopsctl apply --spiffe spiffe://35.166.103.201.nip.io
+   82  ../mlopsctl patch --spiffe spiffe://35.166.103.201.nip.io k3s-values.yaml 
+   83  ../mlopsctl patch k3s-values.yaml 
+   84  pwd
+   85  cd
+   86  sudo apt-get install postgres
+   87  sudo apt-get install postgresql
+   88  sudo apt-get install postgresql-contrib
+   89  sudo -u postgres psql
+   90  sudo vi /etc/postgresql/10/main/postgresql.conf
+   91  sudo vi /etc/postgresql/10/main/pg_hba.conf
+   92  sudo systemctl restart postgresql
+   93  sudo systemctl status postgresql
+   94  curl ifconfig.ip
+   95  curl ifconfig.me
+   96  echo "eyJrIjoibzgzRGNaeFVhVWtWR1FHY1ZzWFkxTzgwdVQ4ajltY1ciLCJuIjoiZGVwbG95ZXIiLCJpZCI6MX0=" | base64 -d
+   97  pwd
+   98  ls
+   99  cd h2oai-platform/
+  100  ls
+  101  cd helm/
+  102  ls -al 
+  103  cd mlops-chart/
+  104  ls -al 
+  105  ../mlopsctl -n update --spiffe spiffe://35.166.103.201.nip.io k3s-values.yaml 
+  106  ../mlopsctl -n upgrade --spiffe spiffe://35.166.103.201.nip.io k3s-values.yaml 
+  107  ../mlopsctl -n upgrade
+  108  ../mlopsctl upgrade
+  109  helm dependency update
+  110  ls
+  111  cd mlops/
+  112  ls -al 
+  113  helm dependency update
+  114  ls -al 
+  115  ls -al charts/
+  116  cd ..
+  117  ls
+  118  ../mlopsctl upgrade
+  119  cd
+  120  cd sandbox/
+  121  ls -al 
+  122  cd startup-files/
+  123  ls -al 
+  124  cat sandbox.service 
+  125  kubectl get secrets
+  126  ls -al 
+  127  cat sandbox.service 
+  128  echo e5Ztkmpoe6ozWFc1uzYT5tWBIioBa2ht_gIdFARM_vpAWDljLnKSlHwZIK35Esrd1ExjWTHCqxAtMXdLV12SQwDnMWb6o9vM3xsnGAfP5WBEK1Lo6fxRfVCdoeR6e_y1vu1bHsH1vCfhkJnK_DzhE4LiSYQFz1MYUD4PIq2Xc8zcwjKJC5GMI_vyL9uod0zdvn6AfCkH3Sp3ZxGXbAAQOzjm0_cSPBPpbojqqkYHEDLf_qBHnj5ZKxmuVQU8nSEp2ZycSbYbYZy5KIrxCmr0HvFtw-C7JC_g1_JRpwCtmo6octYuefQ0huJx25bT-JDViT33-KzCyyjAauych0U4SmxpY2Vuc2VfdmVyc2lvbjoxCnNlcmlhbF9udW1iZXI6MwpsaWNlbnNlZV9vcmdhbml6YXRpb246SDJPLmFpCmxpY2Vuc2VlX2VtYWlsOnRvbWtAaDJvLmFpCmxpY2Vuc2VlX3VzZXJfaWQ6Mwppc19oMm9faW50ZXJuYWxfdXNlOnRydWUKY3JlYXRlZF9ieV9lbWFpbDp0b21rQGgyby5haQpjcmVhdGlvbl9kYXRlOjIwMjAvMTIvMTYKcHJvZHVjdDpEcml2ZXJsZXNzQUkKbGljZW5zZV90eXBlOmRldmVsb3BlcgpleHBpcmF0aW9uX2RhdGU6MjAyMS8xMi8zMQo=
+  129  echo e5Ztkmpoe6ozWFc1uzYT5tWBIioBa2ht_gIdFARM_vpAWDljLnKSlHwZIK35Esrd1ExjWTHCqxAtMXdLV12SQwDnMWb6o9vM3xsnGAfP5WBEK1Lo6fxRfVCdoeR6e_y1vu1bHsH1vCfhkJnK_DzhE4LiSYQFz1MYUD4PIq2Xc8zcwjKJC5GMI_vyL9uod0zdvn6AfCkH3Sp3ZxGXbAAQOzjm0_cSPBPpbojqqkYHEDLf_qBHnj5ZKxmuVQU8nSEp2ZycSbYbYZy5KIrxCmr0HvFtw-C7JC_g1_JRpwCtmo6octYuefQ0huJx25bT-JDViT33-KzCyyjAauych0U4SmxpY2Vuc2VfdmVyc2lvbjoxCnNlcmlhbF9udW1iZXI6MwpsaWNlbnNlZV9vcmdhbml6YXRpb246SDJPLmFpCmxpY2Vuc2VlX2VtYWlsOnRvbWtAaDJvLmFpCmxpY2Vuc2VlX3VzZXJfaWQ6Mwppc19oMm9faW50ZXJuYWxfdXNlOnRydWUKY3JlYXRlZF9ieV9lbWFpbDp0b21rQGgyby5haQpjcmVhdGlvbl9kYXRlOjIwMjAvMTIvMTYKcHJvZHVjdDpEcml2ZXJsZXNzQUkKbGljZW5zZV90eXBlOmRldmVsb3BlcgpleHBpcmF0aW9uX2RhdGU6MjAyMS8xMi8zMQo= | base64 -d
+  130  echo "e5Ztkmpoe6ozWFc1uzYT5tWBIioBa2ht_gIdFARM_vpAWDljLnKSlHwZIK35Esrd1ExjWTHCqxAtMXdLV12SQwDnMWb6o9vM3xsnGAfP5WBEK1Lo6fxRfVCdoeR6e_y1vu1bHsH1vCfhkJnK_DzhE4LiSYQFz1MYUD4PIq2Xc8zcwjKJC5GMI_vyL9uod0zdvn6AfCkH3Sp3ZxGXbAAQOzjm0_cSPBPpbojqqkYHEDLf_qBHnj5ZKxmuVQU8nSEp2ZycSbYbYZy5KIrxCmr0HvFtw-C7JC_g1_JRpwCtmo6octYuefQ0huJx25bT-JDViT33-KzCyyjAauych0U4SmxpY2Vuc2VfdmVyc2lvbjoxCnNlcmlhbF9udW1iZXI6MwpsaWNlbnNlZV9vcmdhbml6YXRpb246SDJPLmFpCmxpY2Vuc2VlX2VtYWlsOnRvbWtAaDJvLmFpCmxpY2Vuc2VlX3VzZXJfaWQ6Mwppc19oMm9faW50ZXJuYWxfdXNlOnRydWUKY3JlYXRlZF9ieV9lbWFpbDp0b21rQGgyby5haQpjcmVhdGlvbl9kYXRlOjIwMjAvMTIvMTYKcHJvZHVjdDpEcml2ZXJsZXNzQUkKbGljZW5zZV90eXBlOmRldmVsb3BlcgpleHBpcmF0aW9uX2RhdGU6MjAyMS8xMi8zMQo=" | base64 -d
+  131  cd
+  132  pwd
+  133  ls -al 
+  134  cd h2oai-platform/
+  135  ls -al 
+  136  cd helm/
+  137  ls
+  138  cd mlops-chart/
+  139  ls -al
+  140  ../mlopsctl upgrade
+  141  echo "e5Ztkmpoe6ozWFc1uzYT5tWBIioBa2ht_gIdFARM_vpAWDljLnKSlHwZIK35Esrd1ExjWTHCqxAtMXdLV12SQwDnMWb6o9vM3xsnGAfP5WBEK1Lo6fxRfVCdoeR6e_y1vu1bHsH1vCfhkJnK_DzhE4LiSYQFz1MYUD4PIq2Xc8zcwjKJC5GMI_vyL9uod0zdvn6AfCkH3Sp3ZxGXbAAQOzjm0_cSPBPpbojqqkYHEDLf_qBHnj5ZKxmuVQU8nSEp2ZycSbYbYZy5KIrxCmr0HvFtw-C7JC_g1_JRpwCtmo6octYuefQ0huJx25bT-JDViT33-KzCyyjAauych0U4SmxpY2Vuc2VfdmVyc2lvbjoxCnNlcmlhbF9udW1iZXI6MwpsaWNlbnNlZV9vcmdhbml6YXRpb246SDJPLmFpCmxpY2Vuc2VlX2VtYWlsOnRvbWtAaDJvLmFpCmxpY2Vuc2VlX3VzZXJfaWQ6Mwppc19oMm9faW50ZXJuYWxfdXNlOnRydWUKY3JlYXRlZF9ieV9lbWFpbDp0b21rQGgyby5haQpjcmVhdGlvbl9kYXRlOjIwMjAvMTIvMTYKcHJvZHVjdDpEcml2ZXJsZXNzQUkKbGljZW5zZV90eXBlOmRldmVsb3BlcgpleHBpcmF0aW9uX2RhdGU6MjAyMS8xMi8zMQo=" | base64 -d
+  142  git diff 
+  143  echo "ZTVadGttcG9lNm96V0ZjMXV6WVQ1dFdCSWlvQmEyaHRfZ0lkRkFSTV92cEFXRGxqTG5LU2xId1pJSzM1RXNyZDFFeGpXVEhDcXhBdE1YZExWMTJTUXdEbk1XYjZvOXZNM3hzbkdBZlA1V0JFSzFMbzZmeFJmVkNkb2VSNmVfeTF2dTFiSHNIMXZDZmhrSm5LX0R6aEU0TGlTWVFGejFNWVVENFBJcTJYYzh6Y3dqS0pDNUdNSV92eUw5dW9kMHpkdm42QWZDa0gzU3AzWnhHWGJBQVFPemptMF9jU1BCUHBib2pxcWtZSEVETGZfcUJIbmo1Wkt4bXVWUVU4blNFcDJaeWNTYlliWVp5NUtJcnhDbXIwSHZGdHctQzdKQ19nMV9KUnB3Q3RtbzZvY3RZdWVmUTBodUp4MjViVC1KRFZpVDMzLUt6Q3l5akFhdXljaDBVNFNteHBZMlZ1YzJWZmRtVnljMmx2YmpveENuTmxjbWxoYkY5dWRXMWlaWEk2TXdwc2FXTmxibk5sWlY5dmNtZGhibWw2WVhScGIyNDZTREpQTG1GcENteHBZMlZ1YzJWbFgyVnRZV2xzT25SdmJXdEFhREp2TG1GcENteHBZMlZ1YzJWbFgzVnpaWEpmYVdRNk13cHBjMTlvTW05ZmFXNTBaWEp1WVd4ZmRYTmxPblJ5ZFdVS1kzSmxZWFJsWkY5aWVWOWxiV0ZwYkRwMGIyMXJRR2d5Ynk1aGFRcGpjbVZoZEdsdmJsOWtZWFJsT2pJd01qQXZNVEl2TVRZS2NISnZaSFZqZERwRWNtbDJaWEpzWlhOelFVa0tiR2xqWlc1elpWOTBlWEJsT21SbGRtVnNiM0JsY2dwbGVIQnBjbUYwYVc5dVgyUmhkR1U2TWpBeU1TOHhNaTh6TVFvPQ==" | base64 -d
+  144  ls -al 
+  145  less mlops/templates/driverless-license-secret.yaml 
+  146  vi mlops/templates/driverless-license-secret.yaml 
+  147  ../mlopsctl upgrade
+  148  kubectl get secrets
+  149  kubectl get secret mlops-driverless-license -o yaml
+  150  echo "ZTVadGttcG9lNm96V0ZjMXV6WVQ1dFdCSWlvQmEyaHRfZ0lkRkFSTV92cEFXRGxqTG5LU2xId1pJSzM1RXNyZDFFeGpXVEhDcXhBdE1YZExWMTJTUXdEbk1XYjZvOXZNM3hzbkdBZlA1V0JFSzFMbzZmeFJmVkNkb2VSNmVfeTF2dTFiSHNIMXZDZmhrSm5LX0R6aEU0TGlTWVFGejFNWVVENFBJcTJYYzh6Y3dqS0pDNUdNSV92eUw5dW9kMHpkdm42QWZDa0gzU3AzWnhHWGJBQVFPemptMF9jU1BCUHBib2pxcWtZSEVETGZfcUJIbmo1Wkt4bXVWUVU4blNFcDJaeWNTYlliWVp5NUtJcnhDbXIwSHZGdHctQzdKQ19nMV9KUnB3Q3RtbzZvY3RZdWVmUTBodUp4MjViVC1KRFZpVDMzLUt6Q3l5akFhdXljaDBVNFNteHBZMlZ1YzJWZmRtVnljMmx2YmpveENuTmxjbWxoYkY5dWRXMWlaWEk2TXdwc2FXTmxibk5sWlY5dmNtZGhibWw2WVhScGIyNDZTREpQTG1GcENteHBZMlZ1YzJWbFgyVnRZV2xzT25SdmJXdEFhREp2TG1GcENteHBZMlZ1YzJWbFgzVnpaWEpmYVdRNk13cHBjMTlvTW05ZmFXNTBaWEp1WVd4ZmRYTmxPblJ5ZFdVS1kzSmxZWFJsWkY5aWVWOWxiV0ZwYkRwMGIyMXJRR2d5Ynk1aGFRcGpjbVZoZEdsdmJsOWtZWFJsT2pJd01qQXZNVEl2TVRZS2NISnZaSFZqZERwRWNtbDJaWEpzWlhOelFVa0tiR2xqWlc1elpWOTBlWEJsT21SbGRtVnNiM0JsY2dwbGVIQnBjbUYwYVc5dVgyUmhkR1U2TWpBeU1TOHhNaTh6TVFvPQ==" | base64 -d 
+  151  kubectl get pods 
+  152  kubectl describe pod steam-516f8012-3868-4048-aad7-395bb162df8a
+  153  clear
+  154  kubectl describe pod steam-516f8012-3868-4048-aad7-395bb162df8a | less
+  155  kubectl get pods 
+  156  kubectl logs -f steam-516f8012-3868-4048-aad7-395bb162df8a 
+  157  top
+  158  kubectl logs -f steam-516f8012-3868-4048-aad7-395bb162df8a 
+  159  kubectl get pods
+  160  kubectl logs -f mlops-deployer-79f56b4c84-7qsdr
+  161  cat ~/.kube/config 
+  162  kubectl get secretes
+  163* 
+  164  kubectl get role
+  165  kubectl get all
+  166  kubectl get secret
+  167  kubectl get secret mlops-deployer-service-account-token-vkkl9 -o yaml
+  168  ../mlopsctl upgrade
+  169  kubectl get pods 
+  170  cat ~/.kube/config 
+  171  kubectl get secret mlops-deployer-service-account-token-vkkl9 -o yaml
+  172  ../mlopsctl upgrade
+  173  git diff 
+  174  cat ~/.ssh/authorized_keys 
+  175  kubectl get services 
+  176  kubectl get services  -A
+  177  ../mlopsctl upgrade
+  178  kubectl get services -A
+  179  kubectl cluster -info
+  180  kubectl cluster-info
+  181  cat ~/.con
+  182  cat ~/.kube/config 
+  183  echo "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJlRENDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdGMyVnkKZG1WeUxXTmhRREUyTWpBM05EazNNRFV3SGhjTk1qRXdOVEV4TVRZeE5UQTFXaGNOTXpFd05UQTVNVFl4TlRBMQpXakFqTVNFd0h3WURWUVFEREJock0zTXRjMlZ5ZG1WeUxXTmhRREUyTWpBM05EazNNRFV3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFSSEJxMUxmOFEzNzR3Nkc2ak83cUdRM3lBdHptd2l3Z1JnN0lESWQ1MjgKL0dVakhoQkkxR3pWNUdsak9YQVU4ZjNyNWtPZVlZVFZUMU5aN3g1OWVBZWtvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVUc3SmVTVWwrZEZqck9tY3FWdVI4ClJicFRpR1V3Q2dZSUtvWkl6ajBFQXdJRFNRQXdSZ0loQVBrRFhWdHZCRDNINWUzbEdNVTRkV1djeXhrZFJReGQKdTVpMkd6RVJIS2tMQWlFQXZ0ckZIMTBFM3FYUGxYZ050K2gxekNNekFsQ2RMSGpwN0piKzg5YUh5bzQ9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K" | base64 -d
+  184  echo "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJlRENDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdGMyVnkKZG1WeUxXTmhRREUyTWpBM05EazNNRFV3SGhjTk1qRXdOVEV4TVRZeE5UQTFXaGNOTXpFd05UQTVNVFl4TlRBMQpXakFqTVNFd0h3WURWUVFEREJock0zTXRjMlZ5ZG1WeUxXTmhRREUyTWpBM05EazNNRFV3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFSSEJxMUxmOFEzNzR3Nkc2ak83cUdRM3lBdHptd2l3Z1JnN0lESWQ1MjgKL0dVakhoQkkxR3pWNUdsak9YQVU4ZjNyNWtPZVlZVFZUMU5aN3g1OWVBZWtvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVUc3SmVTVWwrZEZqck9tY3FWdVI4ClJicFRpR1V3Q2dZSUtvWkl6ajBFQXdJRFNRQXdSZ0loQVBrRFhWdHZCRDNINWUzbEdNVTRkV1djeXhrZFJReGQKdTVpMkd6RVJIS2tMQWlFQXZ0ckZIMTBFM3FYUGxYZ050K2gxekNNekFsQ2RMSGpwN0piKzg5YUh5bzQ9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K" | base64 -d | openssl x509 -text
+  185  echo "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJrRENDQVRlZ0F3SUJBZ0lJYU1TazV5SDAya1l3Q2dZSUtvWkl6ajBFQXdJd0l6RWhNQjhHQTFVRUF3d1kKYXpOekxXTnNhV1Z1ZEMxallVQXhOakl3TnpRNU56QTFNQjRYRFRJeE1EVXhNVEUyTVRVd05Wb1hEVEl5TURVeApNVEUyTVRVd05Wb3dNREVYTUJVR0ExVUVDaE1PYzNsemRHVnRPbTFoYzNSbGNuTXhGVEFUQmdOVkJBTVRESE41CmMzUmxiVHBoWkcxcGJqQlpNQk1HQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJQUnpLY3ppUjU3WHpHNjgKRWVkYjFoVXBYUURJZ3YveExZTmk3NmRwVjNXR0g2V1g2Wllzc3FJN2l2YVVWWmN1VnpuMmxmdkc0MVJvcW1pcQpoTUJzNE5palNEQkdNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFmCkJnTlZIU01FR0RBV2dCU21KYjQ1VDhiaE5NR1pMTnQ2d3JGWWtMbXFnVEFLQmdncWhrak9QUVFEQWdOSEFEQkUKQWlCRTNIOUJvYkoyS3AyWjFtYXNBb0ZBWk9HdVJNU3NqNWxMMWFYaDJWUWQxUUlnQThzU21VNVBGQWRITFZNRApLWEdaZUZVOC9OUUFmdmVaZ3NGOVhZaE9EWEk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0KLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJkakNDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdFkyeHAKWlc1MExXTmhRREUyTWpBM05EazNNRFV3SGhjTk1qRXdOVEV4TVRZeE5UQTFXaGNOTXpFd05UQTVNVFl4TlRBMQpXakFqTVNFd0h3WURWUVFEREJock0zTXRZMnhwWlc1MExXTmhRREUyTWpBM05EazNNRFV3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFRUGpkSmdXTTZNeDFmUjlIK0JJVHh1RHpsSnp5NzNvRVhuRVIwaVErOWMKdmtpUmJZUXYrNGVheGRDSnYrbUprNW44YzVaZjJRQittNm1OVkVZMnRMQUFvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVXBpVytPVS9HNFRUQm1TemJlc0t4CldKQzVxb0V3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnQmtuWVFQbVllZGR3c3RjR1Y5bG9IM2tUOGhZTm03VzEKYWZaWXU0SEZETThDSUFhUnhNSWx0YUJ6eWJhK2NRVjRkcmhNVmJKelZxY1h0bG94U1lsY2FRdXgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  186  echo "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJrRENDQVRlZ0F3SUJBZ0lJYU1TazV5SDAya1l3Q2dZSUtvWkl6ajBFQXdJd0l6RWhNQjhHQTFVRUF3d1kKYXpOekxXTnNhV1Z1ZEMxallVQXhOakl3TnpRNU56QTFNQjRYRFRJeE1EVXhNVEUyTVRVd05Wb1hEVEl5TURVeApNVEUyTVRVd05Wb3dNREVYTUJVR0ExVUVDaE1PYzNsemRHVnRPbTFoYzNSbGNuTXhGVEFUQmdOVkJBTVRESE41CmMzUmxiVHBoWkcxcGJqQlpNQk1HQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJQUnpLY3ppUjU3WHpHNjgKRWVkYjFoVXBYUURJZ3YveExZTmk3NmRwVjNXR0g2V1g2Wllzc3FJN2l2YVVWWmN1VnpuMmxmdkc0MVJvcW1pcQpoTUJzNE5palNEQkdNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFmCkJnTlZIU01FR0RBV2dCU21KYjQ1VDhiaE5NR1pMTnQ2d3JGWWtMbXFnVEFLQmdncWhrak9QUVFEQWdOSEFEQkUKQWlCRTNIOUJvYkoyS3AyWjFtYXNBb0ZBWk9HdVJNU3NqNWxMMWFYaDJWUWQxUUlnQThzU21VNVBGQWRITFZNRApLWEdaZUZVOC9OUUFmdmVaZ3NGOVhZaE9EWEk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0KLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJkakNDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdFkyeHAKWlc1MExXTmhRREUyTWpBM05EazNNRFV3SGhjTk1qRXdOVEV4TVRZeE5UQTFXaGNOTXpFd05UQTVNVFl4TlRBMQpXakFqTVNFd0h3WURWUVFEREJock0zTXRZMnhwWlc1MExXTmhRREUyTWpBM05EazNNRFV3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFRUGpkSmdXTTZNeDFmUjlIK0JJVHh1RHpsSnp5NzNvRVhuRVIwaVErOWMKdmtpUmJZUXYrNGVheGRDSnYrbUprNW44YzVaZjJRQittNm1OVkVZMnRMQUFvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVXBpVytPVS9HNFRUQm1TemJlc0t4CldKQzVxb0V3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnQmtuWVFQbVllZGR3c3RjR1Y5bG9IM2tUOGhZTm03VzEKYWZaWXU0SEZETThDSUFhUnhNSWx0YUJ6eWJhK2NRVjRkcmhNVmJKelZxY1h0bG94U1lsY2FRdXgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=" | base64- d
+  187  echo "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJrRENDQVRlZ0F3SUJBZ0lJYU1TazV5SDAya1l3Q2dZSUtvWkl6ajBFQXdJd0l6RWhNQjhHQTFVRUF3d1kKYXpOekxXTnNhV1Z1ZEMxallVQXhOakl3TnpRNU56QTFNQjRYRFRJeE1EVXhNVEUyTVRVd05Wb1hEVEl5TURVeApNVEUyTVRVd05Wb3dNREVYTUJVR0ExVUVDaE1PYzNsemRHVnRPbTFoYzNSbGNuTXhGVEFUQmdOVkJBTVRESE41CmMzUmxiVHBoWkcxcGJqQlpNQk1HQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJQUnpLY3ppUjU3WHpHNjgKRWVkYjFoVXBYUURJZ3YveExZTmk3NmRwVjNXR0g2V1g2Wllzc3FJN2l2YVVWWmN1VnpuMmxmdkc0MVJvcW1pcQpoTUJzNE5palNEQkdNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFmCkJnTlZIU01FR0RBV2dCU21KYjQ1VDhiaE5NR1pMTnQ2d3JGWWtMbXFnVEFLQmdncWhrak9QUVFEQWdOSEFEQkUKQWlCRTNIOUJvYkoyS3AyWjFtYXNBb0ZBWk9HdVJNU3NqNWxMMWFYaDJWUWQxUUlnQThzU21VNVBGQWRITFZNRApLWEdaZUZVOC9OUUFmdmVaZ3NGOVhZaE9EWEk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0KLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJkakNDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdFkyeHAKWlc1MExXTmhRREUyTWpBM05EazNNRFV3SGhjTk1qRXdOVEV4TVRZeE5UQTFXaGNOTXpFd05UQTVNVFl4TlRBMQpXakFqTVNFd0h3WURWUVFEREJock0zTXRZMnhwWlc1MExXTmhRREUyTWpBM05EazNNRFV3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFRUGpkSmdXTTZNeDFmUjlIK0JJVHh1RHpsSnp5NzNvRVhuRVIwaVErOWMKdmtpUmJZUXYrNGVheGRDSnYrbUprNW44YzVaZjJRQittNm1OVkVZMnRMQUFvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVXBpVytPVS9HNFRUQm1TemJlc0t4CldKQzVxb0V3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnQmtuWVFQbVllZGR3c3RjR1Y5bG9IM2tUOGhZTm03VzEKYWZaWXU0SEZETThDSUFhUnhNSWx0YUJ6eWJhK2NRVjRkcmhNVmJKelZxY1h0bG94U1lsY2FRdXgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=" | base64 -d
+  188  echo "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJrRENDQVRlZ0F3SUJBZ0lJYU1TazV5SDAya1l3Q2dZSUtvWkl6ajBFQXdJd0l6RWhNQjhHQTFVRUF3d1kKYXpOekxXTnNhV1Z1ZEMxallVQXhOakl3TnpRNU56QTFNQjRYRFRJeE1EVXhNVEUyTVRVd05Wb1hEVEl5TURVeApNVEUyTVRVd05Wb3dNREVYTUJVR0ExVUVDaE1PYzNsemRHVnRPbTFoYzNSbGNuTXhGVEFUQmdOVkJBTVRESE41CmMzUmxiVHBoWkcxcGJqQlpNQk1HQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJQUnpLY3ppUjU3WHpHNjgKRWVkYjFoVXBYUURJZ3YveExZTmk3NmRwVjNXR0g2V1g2Wllzc3FJN2l2YVVWWmN1VnpuMmxmdkc0MVJvcW1pcQpoTUJzNE5palNEQkdNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFmCkJnTlZIU01FR0RBV2dCU21KYjQ1VDhiaE5NR1pMTnQ2d3JGWWtMbXFnVEFLQmdncWhrak9QUVFEQWdOSEFEQkUKQWlCRTNIOUJvYkoyS3AyWjFtYXNBb0ZBWk9HdVJNU3NqNWxMMWFYaDJWUWQxUUlnQThzU21VNVBGQWRITFZNRApLWEdaZUZVOC9OUUFmdmVaZ3NGOVhZaE9EWEk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0KLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJkakNDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdFkyeHAKWlc1MExXTmhRREUyTWpBM05EazNNRFV3SGhjTk1qRXdOVEV4TVRZeE5UQTFXaGNOTXpFd05UQTVNVFl4TlRBMQpXakFqTVNFd0h3WURWUVFEREJock0zTXRZMnhwWlc1MExXTmhRREUyTWpBM05EazNNRFV3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFRUGpkSmdXTTZNeDFmUjlIK0JJVHh1RHpsSnp5NzNvRVhuRVIwaVErOWMKdmtpUmJZUXYrNGVheGRDSnYrbUprNW44YzVaZjJRQittNm1OVkVZMnRMQUFvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVXBpVytPVS9HNFRUQm1TemJlc0t4CldKQzVxb0V3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnQmtuWVFQbVllZGR3c3RjR1Y5bG9IM2tUOGhZTm03VzEKYWZaWXU0SEZETThDSUFhUnhNSWx0YUJ6eWJhK2NRVjRkcmhNVmJKelZxY1h0bG94U1lsY2FRdXgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=" | base64 -d | openssl x509 -text
+  189  clear
+  190  echo "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJrRENDQVRlZ0F3SUJBZ0lJYU1TazV5SDAya1l3Q2dZSUtvWkl6ajBFQXdJd0l6RWhNQjhHQTFVRUF3d1kKYXpOekxXTnNhV1Z1ZEMxallVQXhOakl3TnpRNU56QTFNQjRYRFRJeE1EVXhNVEUyTVRVd05Wb1hEVEl5TURVeApNVEUyTVRVd05Wb3dNREVYTUJVR0ExVUVDaE1PYzNsemRHVnRPbTFoYzNSbGNuTXhGVEFUQmdOVkJBTVRESE41CmMzUmxiVHBoWkcxcGJqQlpNQk1HQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJQUnpLY3ppUjU3WHpHNjgKRWVkYjFoVXBYUURJZ3YveExZTmk3NmRwVjNXR0g2V1g2Wllzc3FJN2l2YVVWWmN1VnpuMmxmdkc0MVJvcW1pcQpoTUJzNE5palNEQkdNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFmCkJnTlZIU01FR0RBV2dCU21KYjQ1VDhiaE5NR1pMTnQ2d3JGWWtMbXFnVEFLQmdncWhrak9QUVFEQWdOSEFEQkUKQWlCRTNIOUJvYkoyS3AyWjFtYXNBb0ZBWk9HdVJNU3NqNWxMMWFYaDJWUWQxUUlnQThzU21VNVBGQWRITFZNRApLWEdaZUZVOC9OUUFmdmVaZ3NGOVhZaE9EWEk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0KLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJkakNDQVIyZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQWpNU0V3SHdZRFZRUUREQmhyTTNNdFkyeHAKWlc1MExXTmhRREUyTWpBM05EazNNRFV3SGhjTk1qRXdOVEV4TVRZeE5UQTFXaGNOTXpFd05UQTVNVFl4TlRBMQpXakFqTVNFd0h3WURWUVFEREJock0zTXRZMnhwWlc1MExXTmhRREUyTWpBM05EazNNRFV3V1RBVEJnY3Foa2pPClBRSUJCZ2dxaGtqT1BRTUJCd05DQUFRUGpkSmdXTTZNeDFmUjlIK0JJVHh1RHpsSnp5NzNvRVhuRVIwaVErOWMKdmtpUmJZUXYrNGVheGRDSnYrbUprNW44YzVaZjJRQittNm1OVkVZMnRMQUFvMEl3UURBT0JnTlZIUThCQWY4RQpCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVXBpVytPVS9HNFRUQm1TemJlc0t4CldKQzVxb0V3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnQmtuWVFQbVllZGR3c3RjR1Y5bG9IM2tUOGhZTm03VzEKYWZaWXU0SEZETThDSUFhUnhNSWx0YUJ6eWJhK2NRVjRkcmhNVmJKelZxY1h0bG94U1lsY2FRdXgKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=" | base64 -d | openssl x509 -text
+  191  ../mlopsctl upgrade
+  192  ping kubernetes
+  193  kubectl get services -a
+  194  kubectl get services -A
+  195  less k3s-values.yaml 
+  196  history 
+  197  kubectl get secret mlops-deployer-service-account-token-vkkl9 -o yaml
+  198  echo "ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklsbGZWM2xEVDNseFMwbHZVRXhJZG1KbFJUVnZiRWd0Y0hWMVUxRkJkelZtTVZWTmFuUktPVGhYVEhjaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUprWldaaGRXeDBJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpXTnlaWFF1Ym1GdFpTSTZJbTFzYjNCekxXUmxjR3h2ZVdWeUxYTmxjblpwWTJVdFlXTmpiM1Z1ZEMxMGIydGxiaTEyYTJ0c09TSXNJbXQxWW1WeWJtVjBaWE11YVc4dmMyVnlkbWxqWldGalkyOTFiblF2YzJWeWRtbGpaUzFoWTJOdmRXNTBMbTVoYldVaU9pSnRiRzl3Y3kxa1pYQnNiM2xsY2kxelpYSjJhV05sTFdGalkyOTFiblFpTENKcmRXSmxjbTVsZEdWekxtbHZMM05sY25acFkyVmhZMk52ZFc1MEwzTmxjblpwWTJVdFlXTmpiM1Z1ZEM1MWFXUWlPaUl5WkdFMlptWTVaaTFoTkdJd0xUUTVOelF0T0RBeFpDMWtaRFkyTldReE1tUmpaRGNpTENKemRXSWlPaUp6ZVhOMFpXMDZjMlZ5ZG1salpXRmpZMjkxYm5RNlpHVm1ZWFZzZERwdGJHOXdjeTFrWlhCc2IzbGxjaTF6WlhKMmFXTmxMV0ZqWTI5MWJuUWlmUS5lc1F6N2dnZEptd1FvNTA1cS00T2h3VWRLRDgwc1pEcHB5dGhDSDVtR3E3UXVhU1ZYVE1oVXNTUzJCeWs3Vk9ycnlocUowRG1mUzRJU2VTamZXQktwaWxLY09PblliSEdWS0FiT0U0dGxBTl9LTlVIQWJlbzRMcjh0eVBlU1FCdVlRMXdXeWpIWHliamo4S2JNb3ByQ3p5Wk96c185RHZ1N0hnRmVJT2JTRmJrVDVNWWxkbnVvUVZnSjJLU0xMaUJ0T2daVVd3QjU3eXZlWlJGTXh1QVg5UlBMTDRxQ2RIQUFCa2U3ajd1blliTktGekZYN0hqZ0FsMzlrelBScy03TVU0UFlxcThGajJZME5pM0hwblk0YVVjOEJ1RVR6NXZyYXAtY204OXV1S1FmRFNMcmJsbDg4Zmk0S01PNHJWWUx1aTBJcF9HdVo2YnBRdEdhSnk3LWc=" | base64 -d
+  199  echo "ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklsbGZWM2xEVDNseFMwbHZVRXhJZG1KbFJUVnZiRWd0Y0hWMVUxRkJkelZtTVZWTmFuUktPVGhYVEhjaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUprWldaaGRXeDBJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpXTnlaWFF1Ym1GdFpTSTZJbTFzYjNCekxXUmxjR3h2ZVdWeUxYTmxjblpwWTJVdFlXTmpiM1Z1ZEMxMGIydGxiaTEyYTJ0c09TSXNJbXQxWW1WeWJtVjBaWE11YVc4dmMyVnlkbWxqWldGalkyOTFiblF2YzJWeWRtbGpaUzFoWTJOdmRXNTBMbTVoYldVaU9pSnRiRzl3Y3kxa1pYQnNiM2xsY2kxelpYSjJhV05sTFdGalkyOTFiblFpTENKcmRXSmxjbTVsZEdWekxtbHZMM05sY25acFkyVmhZMk52ZFc1MEwzTmxjblpwWTJVdFlXTmpiM1Z1ZEM1MWFXUWlPaUl5WkdFMlptWTVaaTFoTkdJd0xUUTVOelF0T0RBeFpDMWtaRFkyTldReE1tUmpaRGNpTENKemRXSWlPaUp6ZVhOMFpXMDZjMlZ5ZG1salpXRmpZMjkxYm5RNlpHVm1ZWFZzZERwdGJHOXdjeTFrWlhCc2IzbGxjaTF6WlhKMmFXTmxMV0ZqWTI5MWJuUWlmUS5lc1F6N2dnZEptd1FvNTA1cS00T2h3VWRLRDgwc1pEcHB5dGhDSDVtR3E3UXVhU1ZYVE1oVXNTUzJCeWs3Vk9ycnlocUowRG1mUzRJU2VTamZXQktwaWxLY09PblliSEdWS0FiT0U0dGxBTl9LTlVIQWJlbzRMcjh0eVBlU1FCdVlRMXdXeWpIWHliamo4S2JNb3ByQ3p5Wk96c185RHZ1N0hnRmVJT2JTRmJrVDVNWWxkbnVvUVZnSjJLU0xMaUJ0T2daVVd3QjU3eXZlWlJGTXh1QVg5UlBMTDRxQ2RIQUFCa2U3ajd1blliTktGekZYN0hqZ0FsMzlrelBScy03TVU0UFlxcThGajJZME5pM0hwblk0YVVjOEJ1RVR6NXZyYXAtY204OXV1S1FmRFNMcmJsbDg4Zmk0S01PNHJWWUx1aTBJcF9HdVo2YnBRdEdhSnk3LWc=" | base64 -d > asdf
+  200  cat asdf 
+  201  vi asdf 
+  202  cat asdf 
+  203  ls
+  204  less mlops/templates/deployer-env.yaml 
+  205  less mlops/templates/deployer-environments-secrets.yaml 
+  206  ../mlopsctl upgrade
+  207  vi k3s-values.yaml 
+  208  cd mlops/
+  209  cd templates/
+  210  ls -al 
+  211  less ui-env-config.yaml 
+  212  less ui-secret.yaml 
+  213  less ui-env-config.yaml 
+  214  pwd
+  215  cd ..
+  216  ls -al 
+  217  less values.yaml 
+  218  kubectl get secrets
+  219  kubectl get secrets mlops-grafana-admin -o yaml
+  220  echo "YWRtaW4=" | base64 -d
+  221  sudo netstat -anp
+  222  sudo netstat -anp | grep frafana
+  223  sudo netstat -anp | grep grafana
+  224  sudo netstat -anp | less
+  225  kubectl get ing
+  226  curl -v -X POST -H "Content-Type: application/json" -d '{"name":"adminapikey", "role": "Admin"}' http://admin:admin@mlops-grafana.35.166.103.201.nip.io/api/auth/keys
+  227  ../mlopsctl upgrade
+  228  cd ..
+  229  ../mlopsctl upgrade
+  230  ls -ltr
+  231  less mlops/values.yaml 
+  232  ls -al 
+  233  cd mlops/
+  234  ls -la 
+  235  cd templates/
+  236  ls -al 
+  237  less grafana-admin-secret.yaml 
+  238  history 
+  239  cat /etc/rancher/k3s/k3s.yaml 
+  240  clear
+  241  cat /etc/rancher/k3s/k3s.yaml 
+  242  cat /etc/rancher/node/
+  243  cat /etc/rancher/node/password 
+  244  ls -al /etc/rancher/node/password 
+  245  kubectl -n kube-system get configmap kubeadm-config
+  246  kubectl -n kube-system get cm
+  247  kubectl -n kube-system get cm extension-apiserver-authentication
+  248  kubectl -n kube-system get cm extension-apiserver-authentication -o yaml
+  249  kubectl -n kube-system get secrets
+  250  which kubeadm
+  251  which kubectl
+  252  ls -al /usr/local/bin/kubectl 
+  253  kubectl help
+  254  kubectl cluster-info
+  255  kubectl cluster-info dump
+  256  kubectl cluster-info
+  257  curl -sfL https://get.k3s.io
+  258  sudo systectl status k3s
+  259  sudo systemctl status k3s
+  260  find / -name k3s
+  261  ls /etc/rancher/
+  262  ls /etc/rancher/k3s/
+  263  less /etc/rancher/k3s/k3s.yaml 
+  264  curl -sfL https://get.k3s.io | less
+  265  pwd
+  266  cd
+  267  ls
+  268  cd sandbox/
+  269  cd sar
+  270  ls -al 
+  271  cd startup-files/
+  272  ls -al 
+  273  grep ifconfig *
+  274  sl -al 
+  275  ls -al 
+  276  kubectl get pods 
+  277  cat ~/.kube/config 
+  278  vi ~/.kube/config 
+  279  curl ifconfig.me
+  280  vi ~/.kube/config 
+  281  sudo vi ~/.kube/config 
+  282  kubectl get pods 
+  283  sudo systemctl get pods 
+  284  sudo systemctl status k3
+  285  sudo systemctl status k3s
+  286  histoyr 
+  287  history 
+  288  sudo vi ~/.kube/config 
+  289  sudo systemctl status k3s
+  290  sudo systemctl stop k3s
+  291  sudo systemctl status k3s
+  292  pwd
+  293  cd ..
+  294  ls -ltr
+  295  cd h2oai-platform/
+  296  git diff 
+  297  clear
+  298  vi ~/.ssh/authorized_keys 
+  299  pwd
+  300  git status 
+  301  history 
+  302  pwd
+  303  ls -ltr
+  304  pwd
+  305  cd
+  306  ls
+  307  ls -al 
+  308  cat .bashrc 
+  309  ls -al 
+  310  history 
+  311  cd
+  312  history > sh2.txt

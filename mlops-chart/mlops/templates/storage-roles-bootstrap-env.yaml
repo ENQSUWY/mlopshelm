@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  DATABASE_DRIVER: "postgres"
+  LOG_LEVEL: "trace"
+  SKIP_ON_LOCK: "true"
+kind: ConfigMap
+metadata:
+  name: {{ include "mlops.fullname" . }}-storage-roles-bootstrap-env
+  namespace: {{ .Release.Namespace }}

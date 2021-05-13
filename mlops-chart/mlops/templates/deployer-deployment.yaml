@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- include "mlops.labels" . | nindent 4 }}
+  name: {{ include "mlops.fullname" . }}-deployer
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "mlops.fullname" . }}-deployer
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ include "mlops.fullname" . }}-deployer
+      namespace: {{ .Release.Namespace }}
+    spec:
+      containers:
+        - env:
+            - name: CONFIG_FORCE_deployer_environments_kubernetes_0_master__url
+              value: {{ .Values.mlops.deployer_kubernetes_cluster_server }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "mlops.fullname" . }}-deployer-env
+                optional: false
+            - secretRef:
+                name: {{ include "mlops.fullname" . }}-deployer-environments
+                optional: false
+          image: {{ .Values.mlops.deployer_image }}
+          imagePullPolicy: {{ .Values.mlops.image_pull_policy }}
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 9980
+            timeoutSeconds: 1
+          name: {{ include "mlops.fullname" . }}-deployer
+          ports:
+            - containerPort: 9980
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /pki/ca
+              name: tls-ca
+            - mountPath: /pki/client
+              name: tls-client
+            - mountPath: /pki/server
+              name: tls-server
+            - mountPath: /license
+              name: license
+              readOnly: true
+      volumes:
+        - name: tls-ca
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-ca
+        - name: tls-server
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-deployer-tls-server
+        - name: tls-client
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-deployer-tls-client
+        - name: license
+          secret:
+            defaultMode: 420
+            items:
+              - key: license.sig
+                path: license.sig
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-driverless-license

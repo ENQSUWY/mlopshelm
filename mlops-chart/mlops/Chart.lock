@@ -1,0 +1,12 @@
+dependencies:
+- name: ambassador
+  repository: https://getambassador.io
+  version: 6.5.19
+- name: influxdb
+  repository: https://helm.influxdata.com
+  version: 4.9.14
+- name: grafana
+  repository: https://grafana.github.io/helm-charts
+  version: 6.8.0
+digest: sha256:3e39712f4666ac7a6ae6e0e3746690f3ab3b5fa93d5a2984650a977713a3966e
+generated: "2021-05-12T10:58:42.517496-04:00"

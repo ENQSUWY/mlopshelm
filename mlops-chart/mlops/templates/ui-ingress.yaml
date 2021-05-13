@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.mlops.kubernetes_io_ingress_class }}
+  name: {{ include "mlops.fullname" . }}-ui
+  namespace: {{ .Release.Namespace }}
+spec:
+  rules:
+  - host: "{{ .Values.mlops.ui_subdomain }}.{{ .Values.mlops.domain }}"
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ include "mlops.fullname" . }}-ui
+            port:
+              name: http
+        pathType: ImplementationSpecific

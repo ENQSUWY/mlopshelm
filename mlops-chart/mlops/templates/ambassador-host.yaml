@@ -1,0 +1,12 @@
+apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: {{ include "mlops.fullname" . }}-ambassador-host
+  namespace: {{ .Release.Namespace }}
+spec:
+  hostname: "{{ .Values.mlops.model_subdomain }}.{{ .Values.mlops.domain }}"
+  acmeProvider:
+    authority: none
+  requestPolicy:
+    insecure:
+      action: Route

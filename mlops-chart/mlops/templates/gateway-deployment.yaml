@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- include "mlops.labels" . | nindent 4 }}
+  name: {{ include "mlops.fullname" . }}-gateway
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "mlops.fullname" . }}-gateway
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ include "mlops.fullname" . }}-gateway
+      namespace: {{ .Release.Namespace }}
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: {{ include "mlops.fullname" . }}-gateway-env
+                optional: false
+          image: {{ .Values.mlops.gateway_image }}
+          imagePullPolicy: {{ .Values.mlops.image_pull_policy }}
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 9500
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: {{ include "mlops.fullname" . }}-gateway
+          ports:
+            - containerPort: 9500
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /pki/ca
+              name: tls-ca
+            - mountPath: /pki/client
+              name: tls-client
+      volumes:
+        - name: tls-ca
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-ca
+        - name: tls-client
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-ui-tls-client

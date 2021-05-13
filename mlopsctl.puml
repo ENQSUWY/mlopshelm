@@ -1,0 +1,50 @@
+@startuml
+
+'https://plantuml.com/sequence-diagram
+
+box "Your local environment"
+participant "gen-pki"
+participant "k3s-values.yaml"
+end box
+
+box "Kubernetes cluster" #LightBlue
+participant "kubernetes"
+end box
+
+== Installation ==
+
+group mlopsctl init
+"gen-pki" -> "gen-pki": Create local values
+end
+
+group mlopsctl patch
+"gen-pki" -> "k3s-values.yaml": Patch local yaml override values before updating
+end
+
+group mlopsctl update
+"k3s-values.yaml" -> "kubernetes": Update kubernetes values (via helm update)
+end
+
+||100||
+
+== Uninstallation ==
+
+group mlopsctl uninstall
+"kubernetes" -> "kubernetes": Remove software and config from kubernetes (via helm uninstall)
+destroy "kubernetes"
+end
+
+group mlopsctl clean
+"gen-pki" -> "gen-pki": Remove local values (but not the local yaml)
+destroy "gen-pki"
+end
+
+||100||
+
+== Advanced ==
+
+group mlopsctl fetch
+"kubernetes" -> "gen-pki": Restore local values from kubernetes
+end
+
+@enduml

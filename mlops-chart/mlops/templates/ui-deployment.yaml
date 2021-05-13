@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- include "mlops.labels" . | nindent 4 }}
+  name: {{ include "mlops.fullname" . }}-ui
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "mlops.fullname" . }}-ui
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ include "mlops.fullname" . }}-ui
+      namespace: {{ .Release.Namespace }}
+    spec:
+      containers:
+        - env:
+            - name: COOKIE_AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: cookie_auth_secret
+                  name: {{ include "mlops.fullname" . }}-ui-secrets
+            - name: COOKIE_ENCRYPT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: cookie_encrypt_secret
+                  name: {{ include "mlops.fullname" . }}-ui-secrets
+            - name: OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: ui_client_secret
+                  name: {{ include "mlops.fullname" . }}-oidc-client-secrets
+          envFrom:
+            - configMapRef:
+                name: {{ include "mlops.fullname" . }}-ui-env
+                optional: false
+          image: {{ .Values.mlops.ui_image }}
+          imagePullPolicy: {{ .Values.mlops.image_pull_policy }}
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /version
+              port: 9990
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: {{ include "mlops.fullname" . }}-ui
+          ports:
+            - containerPort: 9990
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /pki/ca
+              name: tls-ca
+            - mountPath: /pki/client
+              name: tls-client
+      volumes:
+        - name: tls-ca
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-ca
+        - name: tls-client
+          secret:
+            defaultMode: 420
+            optional: false
+            secretName: {{ include "mlops.fullname" . }}-ui-tls-client

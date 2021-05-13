@@ -1,0 +1,165 @@
+# Default values for H2O MLOps Deployment.
+# This is a YAML-formatted file.
+
+mlops:
+  # Kubernetes infrastructure.
+  storage_class_name: "unknown storage class name"
+  base64_deployer_kubernetes_certificate_authority_data:
+  deployer_kubernetes_token:
+  deployer_kubernetes_cluster_server:
+
+  # General OpenID configuration.
+  oidc_end_session_url:
+  oidc_provider_url:
+  oidc_token_introspection_url:
+
+  # MLOps OpenID configuration.
+  storage_oidc_client_id: h2oai-storage
+  ui_oidc_client_id: h2oai-storage-web
+
+  # MLOps configuration.
+  namespace: "default"
+
+  api_subdomain: "mlops-api"
+  grafana_subdomain: "mlops-grafana"
+  model_subdomain: "mlops-model"
+  ui_subdomain: "mlops"
+
+  deployer_image: gcr.io/vorvan/h2oai/deployer:0.40.1-SNAPSHOT_f12b8ae
+  gateway_image: h2oai/mlops-grpc-gateway:0.40.1
+  model_fetcher_image: h2oai/h2oai-model-fetcher:0.40.1
+  model_ingestion_image: h2oai/h2oai-model-ingest:0.40.1
+  monitor_proxy_image: h2oai/monitor-proxy:0.40.1
+  scorer_image: h2oai/rest-scorer:1.0.25
+  security_proxy_image: h2oai/h2oai-security-proxy:0.40.1
+  storage_image: h2oai/h2oai-storage:0.40.1
+  ui_image: h2oai/h2oai-storage-web:0.40.1
+
+  image_pull_policy: IfNotPresent
+
+  kubernetes_io_ingress_class: "traefik"
+
+  influxdb_data_volume_size: "30Gi"
+  grafana_data_volume_size: "10Gi"
+  storage_data_volume_size: "20Gi"
+
+  service_type: "ClusterIP"
+
+  protocol:
+  domain:
+
+  # MLOps PKI.
+  base64_ca_certificate:
+
+  base64_storage_tls_server_certificate:
+  base64_storage_tls_server_key:
+
+  base64_driverless_tls_client_certificate:
+  base64_driverless_tls_client_key:
+
+  base64_ui_tls_client_certificate:
+  base64_ui_tls_client_key:
+
+  base64_deployer_tls_client_certificate:
+  base64_deployer_tls_client_key:
+  base64_deployer_tls_server_certificate:
+  base64_deployer_tls_server_key:
+
+  base64_fetcher_tls_client_certificate:
+  base64_fetcher_tls_client_key:
+
+  base64_ingestion_tls_client_certificate:
+  base64_ingestion_tls_client_key:
+  base64_ingestion_tls_server_certificate:
+  base64_ingestion_tls_server_key:
+
+  postgres_hostname:
+  postgres_dbname:
+  postgres_sslmode: "disable"
+  postgres_port: "5432"
+  postgres_username:
+  postgres_password:
+
+  grafana_api_key:
+
+  cookie_auth_secret:
+  cookie_encrypt_secret:
+
+  driverless_client_secret:
+  retrainer_client_secret:
+  storage_client_secret:
+  ui_client_secret:
+
+  base64_driverless_license_key:
+
+  ambassador:
+    model_subdomain: "model"
+
+ambassador:
+  deploymentLabels:
+    app: "ambassador"
+    prefix: "mlops"
+    component: "ambassador"
+
+  service:
+    type: "ClusterIP"
+    ports: [ { "name": "http", "port": 1080, "targetPort": 1080 } ]
+
+  adminService:
+    create: false
+
+  enableAES: false
+
+influxdb:
+  image:
+    tag: 1.7.11-alpine
+
+  serviceAccount:
+    create: false
+
+  service:
+    type: "ClusterIP"
+
+  persistence:
+    enabled: true
+    existingClaim: "mlops-influxdb-data"
+
+  config:
+    monitor: {"store-enabled": true}
+
+grafana:
+  image:
+    tag: 6.7.5
+
+  serviceAccount:
+    create: false
+
+  service:
+    type: "ClusterIP"
+    port: 3000
+
+
+  admin:
+    existingSecret: "mlops-grafana-admin"
+    userKey: "user"
+    passwordKey: "password"
+
+  persistence:
+    enabled: true
+    existingClaim: "mlops-grafana-data"
+
+  ingress:
+    enabled: true
+    hosts:
+      - "mlops-grafana.52-190-40-228.h2o.sslip.io"
+
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: InfluxDB
+          type: influxdb
+          isDefault: true
+          editable: false
+          access: proxy
+          url: http://mlops-influxdb:8086

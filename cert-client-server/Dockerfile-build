@@ -1,0 +1,11 @@
+FROM ubuntu:18.04
+
+RUN apt-get -y update && \
+    apt-get -y install \
+    less \
+    make \
+    openssl
+
+ARG HOST_USERNAME
+ARG HOST_UID
+ARG HOST_GID
